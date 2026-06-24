@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentoria Ruby on Rails — Material do Curso</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --red:       #CC0000;
+  --red-dark:  #A30000;
+  --red-light: #FFF5F5;
+  --bg:        #F7F7F7;
+  --white:     #FFFFFF;
+  --ink:       #333333;
+  --ink-2:     #555555;
+  --ink-3:     #888888;
+  --border:    #DEDEDE;
+  --code-bg:   #1E1E2E;
+  --code-line: #2A2A3E;
+  --code-text: #CDD6F4;
+  --code-kw:   #CBA6F7;
+  --code-str:  #A6E3A1;
+  --code-num:  #FAB387;
+  --code-cmt:  #6C7086;
+  --code-fn:   #89B4FA;
+  --code-out:  #94E2D5;
+  --green:     #1A7A4A;
+  --green-bg:  #EDFAF3;
+  --blue:      #1A5FA8;
+  --blue-bg:   #EDF5FF;
+  --yellow-bg: #FFFBEC;
+  --yellow:    #D4A017;
+  --page-max:  760px;
+  --page-pad:  40px;
+  --side-w:    260px;
+  --layout-gap: 0px;
+}
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  padding-left: var(--side-w);
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--red-dark);
+  color: rgba(255,255,255,0.8);
+  font-size: 12px;
+  text-align: center;
+  padding: 7px 20px;
+  letter-spacing: 0.02em;
+}
+
+/* HEADER */
+header { background: var(--red); position: relative; overflow: hidden; }
+header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,0.12) 0, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 8px);
+}
+.header-inner {
+  max-width: var(--page-max); margin: 0 auto;
+  padding: 44px var(--page-pad) 40px;
+}
+.header-eyebrow {
+  font-size: 12px; color: rgba(255,255,255,0.65);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.header-eyebrow::before { content: ''; width: 20px; height: 1px; background: rgba(255,255,255,0.4); }
+header h1 {
+  font-size: clamp(28px, 4.5vw, 46px);
+  font-weight: 700; color: #fff;
+  line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 12px;
+}
+header h1 em { font-style: italic; font-weight: 300; color: rgba(255,255,255,0.85); }
+.header-sub {
+  font-size: 16px; color: rgba(255,255,255,0.75);
+  font-weight: 300; max-width: 520px; line-height: 1.65;
+}
+
+/* GUIDE NAV */
+.guide-nav {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.guide-nav-inner {
+  max-width: 960px; margin: 0 auto;
+  padding: 0 40px; display: flex; overflow-x: auto;
+}
+.guide-nav a {
+  display: block; padding: 13px 16px;
+  font-size: 13px; color: var(--ink-2);
+  text-decoration: none; border-bottom: 3px solid transparent;
+  white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+}
+.guide-nav a:hover { color: var(--red); border-bottom-color: var(--red); }
+
+/* LAYOUT */
+.main-wrap {
+  max-width: var(--page-max); margin: 0 auto;
+  padding: 44px var(--page-pad) 80px;
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: var(--layout-gap); align-items: start;
+}
+
+.sidebar-wrap {
+  min-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.sidebar-wrap .content {
+  display: none;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--side-w);
+  max-height: 100vh;
+  overflow-y: auto;
+  z-index: 80;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  padding: 24px 24px 28px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.sidebar h3 {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 10px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+.sidebar ol { list-style: none; counter-reset: s; padding: 0; }
+.sidebar ol li { counter-increment: s; position: relative; padding-left: 20px; margin-bottom: 2px; }
+.sidebar ol li::before { content: counter(s) '.'; position: absolute; left: 0; top: 3px; font-size: 11px; color: var(--ink-3); font-weight: 600; }
+.sidebar ol li a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0; font-size: 13px; line-height: 1.4; transition: color 0.12s; }
+.sidebar ol li a:hover { color: var(--red); }
+.sbox { margin-top: 18px; padding: 12px 14px; font-size: 12px; line-height: 1.55; border-radius: 0 4px 4px 0; }
+.sbox.red   { background: var(--red-light); border-left: 3px solid var(--red); color: #6B0000; }
+.sbox.green { background: var(--green-bg); border-left: 3px solid var(--green); color: #0D3D22; }
+.sbox strong { display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+.sbox.red strong { color: var(--red); }
+.sbox.green strong { color: var(--green); }
+
+/* CONTENT */
+.content { min-width: 0; }
+.chapter { margin-bottom: 60px; scroll-margin-top: 68px; }
+.chapter-num { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.chapter h2 { font-size: 26px; font-weight: 700; color: var(--ink); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--border); letter-spacing: -0.01em; line-height: 1.2; }
+.chapter h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin: 32px 0 10px; }
+.chapter h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin: 24px 0 8px; }
+.chapter p { font-size: 15px; color: var(--ink-2); margin-bottom: 14px; line-height: 1.8; }
+.chapter ul, .chapter ol { padding-left: 22px; margin-bottom: 14px; }
+.chapter li { font-size: 15px; color: var(--ink-2); margin-bottom: 7px; line-height: 1.7; }
+.chapter li strong { color: var(--ink); }
+.chapter a { color: var(--red); }
+.chapter code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  background: #F0F0F0; border: 1px solid #DDD;
+  padding: 1px 5px; border-radius: 3px; color: var(--red-dark);
+}
+
+/* CALLOUTS */
+.callout { border-radius: 0 4px 4px 0; padding: 14px 20px; margin: 20px 0; font-size: 14px; line-height: 1.75; color: var(--ink-2); }
+.callout.tip     { background: var(--green-bg); border-left: 4px solid var(--green); }
+.callout.info    { background: var(--blue-bg);  border-left: 4px solid var(--blue); }
+.callout.note    { background: var(--yellow-bg); border-left: 4px solid var(--yellow); }
+.callout.warning { background: var(--red-light); border-left: 4px solid var(--red); }
+.callout-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.callout.tip .callout-label     { color: var(--green); }
+.callout.info .callout-label    { color: var(--blue); }
+.callout.note .callout-label    { color: #8B6914; }
+.callout.warning .callout-label { color: var(--red); }
+
+/* CODE BLOCKS */
+.code-block { border-radius: 6px; overflow: hidden; margin: 20px 0; font-family: 'Source Code Pro', monospace; font-size: 13px; line-height: 1.65; }
+.code-header {
+  background: #13131F; color: #6C7086;
+  padding: 8px 16px; font-size: 11px;
+  display: flex; align-items: center; justify-content: space-between;
+  letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600;
+}
+.code-header .dot-row { display: flex; gap: 5px; }
+.code-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+.code-header .dot.red { background: #FF5F57; }
+.code-header .dot.yellow { background: #FEBC2E; }
+.code-header .dot.green { background: #28C840; }
+.code-body { background: var(--code-bg); padding: 18px 20px; overflow-x: auto; }
+.code-body pre { margin: 0; }
+
+/* Syntax colors */
+.kw  { color: var(--code-kw); }   /* keyword: def, class, end, if */
+.str { color: var(--code-str); }  /* string: "texto" */
+.num { color: var(--code-num); }  /* number: 42 */
+.cmt { color: var(--code-cmt); font-style: italic; } /* comment */
+.fn  { color: var(--code-fn); }   /* method name */
+.out { color: var(--code-out); }  /* output / result */
+.var { color: var(--code-text); } /* variable */
+.cmd { color: #CDD6F4; }          /* terminal command text */
+.prm { color: #89B4FA; }          /* prompt irb> or $ */
+.op  { color: #89DCEB; }          /* operators = . + - * / % */
+.sym { color: #F38BA8; }          /* symbol :nome */
+.pun { color: #89DCEB; }          /* punctuation [] {} */
+
+/* PRACTICE BOX */
+.practice {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden; margin: 24px 0;
+}
+.practice-header {
+  background: var(--ink); color: #fff;
+  padding: 10px 18px; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  letter-spacing: 0.01em;
+}
+.practice-header::before { content: '⌨️'; font-size: 16px; }
+.practice-body { padding: 18px 20px; }
+.practice-body p { font-size: 14px; color: var(--ink-2); margin-bottom: 10px; line-height: 1.65; }
+.practice-body ol { padding-left: 20px; }
+.practice-body li { font-size: 14px; color: var(--ink-2); margin-bottom: 8px; line-height: 1.6; }
+
+/* MISSION BOX */
+.mission {
+  background: var(--red-light); border: 2px solid var(--red);
+  border-radius: 4px; padding: 20px 22px; margin: 28px 0;
+}
+.mission-title {
+  font-size: 13px; font-weight: 700; color: var(--red);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.mission-title::before { content: '🎯'; font-size: 16px; }
+.mission ol { padding-left: 20px; }
+.mission li { font-size: 14px; color: #6B0000; margin-bottom: 8px; line-height: 1.65; }
+
+/* TYPE TABLE */
+.type-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+.type-table thead tr { background: var(--ink); color: #fff; }
+.type-table thead th { padding: 10px 16px; text-align: left; font-size: 13px; font-weight: 600; }
+.type-table tbody tr { border-bottom: 1px solid var(--border); background: var(--white); }
+.type-table tbody tr:nth-child(even) { background: #FAFAFA; }
+.type-table tbody td { padding: 10px 16px; color: var(--ink-2); vertical-align: top; line-height: 1.55; }
+.type-table tbody td:first-child { font-family: 'Source Code Pro', monospace; font-size: 13px; color: var(--red-dark); font-weight: 600; width: 90px; }
+.type-table tbody td:nth-child(2) { font-weight: 600; color: var(--ink); width: 100px; }
+
+/* SETUP CHOICE CARDS */
+.setup-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+.choice-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.choice-head { padding: 14px 20px; background: var(--code-bg); border-bottom: 1px solid var(--border); }
+.choice-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-bottom: 6px; }
+.choice-badge.wsl    { background: var(--green-bg); color: var(--green); border: 1px solid #7DCCA8; }
+.choice-badge.native { background: var(--blue-bg);  color: var(--blue);  border: 1px solid #90BDEE; }
+.choice-title { font-size: 14px; font-weight: 700; color: #CDD6F4; }
+.choice-body { padding: 18px 20px; }
+.choice-body p { font-size: 13px; color: var(--ink-2); margin-bottom: 12px; line-height: 1.65; }
+.choice-body h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin: 16px 0 8px; }
+
+/* EXTENSION GRID */
+.ext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
+.ext-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; border-left: 3px solid var(--red); }
+.ext-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.ext-pub  { font-size: 11px; color: var(--ink-3); margin-bottom: 6px; font-family: 'Source Code Pro', monospace; }
+.ext-desc { font-size: 12px; color: var(--ink-3); line-height: 1.55; }
+
+.hero-rotina { background: linear-gradient(135deg, #1A0F2E 0%, #12071E 100%); }
+.hero-rotina .hero-module-label { color: #FAB387; }
+
+/* READING GRID */
+.reading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.reading-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; padding: 20px;
+  text-decoration: none; display: flex; flex-direction: column; gap: 12px;
+  border-top: 3px solid var(--red); transition: box-shadow 0.15s;
+}
+.reading-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.reading-header { display: flex; align-items: center; gap: 12px; }
+.reading-logo {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #000; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; flex-shrink: 0;
+  font-family: 'Source Code Pro', monospace;
+}
+.reading-logo-ruby { background: var(--red); }
+.reading-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.reading-type { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-top: 2px; }
+.reading-desc { font-size: 13px; color: var(--ink-2); line-height: 1.65; margin: 0; flex: 1; }
+.reading-desc strong { color: var(--ink); }
+.reading-action { font-size: 13px; font-weight: 700; color: var(--red); }
+
+/* READING ROUTINE */
+.reading-routine {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden; margin: 24px 0;
+}
+.routine-title {
+  background: #1A0F2E; color: #FAB387;
+  padding: 12px 18px; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.routine-steps { display: flex; flex-direction: column; }
+.routine-step {
+  display: grid; grid-template-columns: 80px 1fr;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  align-items: start; gap: 16px;
+}
+.routine-step:last-child { border-bottom: none; }
+.routine-time {
+  font-size: 12px; font-weight: 700; color: #FAB387;
+  background: #1A0F2E; padding: 3px 8px; border-radius: 100px;
+  text-align: center; white-space: nowrap; margin-top: 2px;
+}
+.routine-text { font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+
+@media (max-width: 720px) {
+  .reading-grid { grid-template-columns: 1fr; }
+}
+
+/* HERO SECTION — full width between content blocks */
+.hero-section {
+  width: 100%;
+  border-bottom: 3px solid rgba(255,255,255,0.06);
+  position: relative; overflow: hidden;
+}
+.hero-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    90deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px,
+    transparent 1px, transparent 8px
+  );
+  pointer-events: none;
+}
+.hero-section-inner {
+  max-width: var(--page-max); margin: 0 auto;
+  padding: 36px var(--page-pad);
+  display: flex; align-items: center; gap: 32px;
+}
+.hero-rotina { background: linear-gradient(135deg, #1A0F2E 0%, #12071E 100%); }
+.hero-setup  { background: linear-gradient(135deg, #0D1117 0%, #1A2744 100%); }
+.hero-git    { background: linear-gradient(135deg, #0A1500 0%, #0D2110 100%); }
+.hero-ruby   { background: linear-gradient(135deg, #1A0000 0%, #2A0808 100%); }
+
+/* SIDEBAR GHOST — keeps grid alignment without repeating sidebar content */
+.sidebar-ghost { display: none; }
+
+/* MODULE HEROES */
+.module-hero { display: none; } /* legacy, not used */
+.module-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    90deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px,
+    transparent 1px, transparent 8px
+  );
+  pointer-events: none;
+}
+.hero-setup { background: linear-gradient(135deg, #0D1117 0%, #1A2744 100%); }
+.hero-git   { background: linear-gradient(135deg, #0A1500 0%, #0D2110 100%); }
+.hero-ruby  { background: linear-gradient(135deg, #1A0000 0%, #2A0808 100%); }
+
+.hero-pixel-art {
+  flex-shrink: 0; image-rendering: pixelated;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 6px; overflow: hidden;
+  width: 200px; height: 80px;
+}
+.hero-pixel-art svg { display: block; width: 100%; height: 100%; }
+.hero-content { flex: 1; }
+.hero-module-label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px;
+}
+.hero-rotina .hero-module-label { color: #FAB387; }
+.hero-setup  .hero-module-label { color: #89B4FA; }
+.hero-git    .hero-module-label { color: #A6E3A1; }
+.hero-ruby   .hero-module-label { color: #F38BA8; }
+.hero-title {
+  font-size: 32px; font-weight: 700; color: #fff;
+  letter-spacing: -0.02em; line-height: 1; margin-bottom: 10px;
+}
+.hero-sub {
+  font-size: 14px; color: rgba(255,255,255,0.55);
+  line-height: 1.65; max-width: 420px;
+}
+@media (max-width: 720px) {
+  .hero-section-inner { flex-direction: column; padding: 24px 20px; gap: 16px; }
+  .sidebar-ghost { display: none; }
+  .hero-title { font-size: 24px; }
+}
+
+/* RESOURCE GRID */
+.resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.resource-card {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; padding: 18px 16px;
+  border-top: 3px solid var(--red);
+  text-decoration: none; transition: box-shadow 0.15s;
+}
+.resource-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.resource-icon { font-size: 22px; flex-shrink: 0; width: 36px; text-align: center; margin-top: 2px; color: var(--red); }
+.resource-type { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+.resource-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.resource-desc { font-size: 12px; color: var(--ink-3); line-height: 1.55; }
+
+/* CHECKLIST */
+.checklist { display: flex; flex-direction: column; gap: 2px; margin: 20px 0; }
+.checklist-item { display: grid; grid-template-columns: 44px 1fr; background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.check-num { background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; font-family: 'Source Code Pro', monospace; }
+.check-body { padding: 14px 18px; }
+.check-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.check-desc { font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+.check-desc a { color: var(--red); }
+.check-desc strong { color: var(--ink); }
+
+/* GIT STEPS */
+.git-steps { display: flex; flex-direction: column; gap: 2px; margin: 20px 0; }
+.git-step {
+  display: grid; grid-template-columns: 44px 1fr;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+}
+.git-step-num {
+  background: #1A1A2E; color: #89B4FA;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700;
+  font-family: 'Source Code Pro', monospace;
+}
+.git-step-body { padding: 14px 18px; }
+.git-step-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.git-step-title code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px; background: var(--code-bg);
+  border: 1px solid var(--border); padding: 1px 6px;
+  border-radius: 3px; color: var(--red-dark);
+}
+.git-step-desc { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
+
+/* QUEST GIT FLOW */
+.quest-git-flow {
+  margin-top: 18px;
+  border-top: 1px solid #2A2A4E;
+  padding-top: 14px;
+}
+.quest-git-title {
+  font-size: 12px; font-weight: 700;
+  color: #89B4FA; letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+/* QUEST BLOCKS */
+.quest-block {
+  margin: 32px 0;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid #1A1A2E;
+  background: #0F0F1A;
+  font-family: 'Source Code Pro', monospace;
+  image-rendering: pixelated;
+}
+.quest-block.quest-bonus { border-color: #D4A017; }
+.quest-header {
+  background: #1A1A2E;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 2px solid #2A2A4E;
+}
+.quest-block.quest-bonus .quest-header { background: #2A1F00; border-bottom-color: #D4A017; }
+.quest-pixel { flex-shrink: 0; image-rendering: pixelated; }
+.quest-pixel svg { display: block; }
+.quest-info { flex: 1; }
+.quest-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6C7086;
+  margin-bottom: 3px;
+}
+.quest-block.quest-bonus .quest-label { color: #D4A017; }
+.quest-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #CDD6F4;
+  letter-spacing: 0.02em;
+}
+.quest-xp {
+  font-size: 12px;
+  font-weight: 700;
+  color: #A6E3A1;
+  background: rgba(166,227,161,0.12);
+  border: 1px solid rgba(166,227,161,0.3);
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.quest-block.quest-bonus .quest-xp { color: #FAB387; background: rgba(250,179,135,0.12); border-color: rgba(250,179,135,0.3); }
+.quest-body {
+  padding: 20px 22px;
+  background: #13131F;
+}
+.quest-body ol { padding-left: 20px; }
+.quest-body li {
+  font-size: 13px;
+  color: #BAC2DE;
+  margin-bottom: 10px;
+  line-height: 1.65;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.quest-body li code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  background: #1E1E2E;
+  border: 1px solid #313244;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #CBA6F7;
+}
+.quest-delivery {
+  margin-top: 16px;
+  background: #1E1E2E;
+  border: 1px solid #313244;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #94E2D5;
+  font-family: 'Source Sans 3', sans-serif;
+  line-height: 1.55;
+}
+.quest-delivery code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  background: #313244;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #CBA6F7;
+}
+.quest-delivery-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94E2D5;
+  margin-right: 6px;
+}
+
+/* FOOTER */
+footer { background: var(--red-dark); padding: 22px 40px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.5); }
+
+@media (max-width: 720px) {
+  body { padding-left: 0; }
+  .main-wrap { grid-template-columns: 1fr; padding: 24px 20px 60px; }
+  .sidebar { display: none; }
+  .sidebar-wrap { display: none; }
+  .header-inner { padding: 32px 20px 28px; }
+  .guide-nav-inner { padding: 0 16px; }
+  .setup-choice { grid-template-columns: 1fr; }
+  .ext-grid { grid-template-columns: 1fr; }
+  footer { padding: 18px 20px; }
+}
+/* ── COMMAND REFERENCE TABLE ── */
+.cmd-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+.cmd-table thead tr { background: var(--ink); color: #fff; }
+.cmd-table thead th { padding: 10px 16px; text-align: left; font-size: 13px; font-weight: 600; }
+.cmd-table tbody tr { border-bottom: 1px solid var(--border); background: var(--white); }
+.cmd-table tbody tr:nth-child(even) { background: #FAFAFA; }
+.cmd-table tbody td { padding: 10px 16px; color: var(--ink-2); vertical-align: top; line-height: 1.55; }
+.cmd-table tbody td:first-child { font-family: 'Source Code Pro', monospace; font-size: 12px; color: var(--red-dark); font-weight: 600; white-space: nowrap; }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  Mentoria individual · Ruby on Rails · Do ambiente ao primeiro sistema web
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">Material do curso</div>
+    <h1>De iniciante a <em>Engenheira de Software.</em></h1>
+    <p class="header-sub">Tudo que você precisa para ir do zero ao seu primeiro sistema web em Ruby on Rails — ambiente, Git, Ruby e muito mais.</p>
+  </div>
+</header>
+
+
+<div class="main-wrap sidebar-wrap">
+  <aside class="sidebar">
+    <h3>Neste módulo</h3>
+    <ol>
+      <li><a href="#rotina-diaria">Rotina diária</a></li>
+      <li><a href="#setup-ambiente">Setup — Ambiente</a></li>
+      <li><a href="#git-intro">Git — Início</a></li>
+      <li><a href="#o-que-e-git">Git — O que é</a></li>
+      <li><a href="#tres-estagios">Git — Os 3 estágios</a></li>
+      <li><a href="#primeiros-comandos">Git — Primeiros comandos</a></li>
+      <li><a href="#branches">Git — Branches</a></li>
+      <li><a href="#remoto">Git — Repositório remoto</a></li>
+      <li><a href="#desfazendo">Git — Desfazendo erros</a></li>
+      <li><a href="#referencia">Git — Referência rápida</a></li>
+      <li><a href="#setup-ruby">Setup — Ruby</a></li>
+      <li><a href="#introducao">Introdução ao Ruby</a></li>
+      <li><a href="#primeiro-programa">Primeiro programa</a></li>
+      <li><a href="#irb">IRB — o playground</a></li>
+      <li><a href="#tipos-de-dados">Tipos de dados</a></li>
+      <li><a href="#operadores">Operadores matemáticos</a></li>
+      <li><a href="#entrada-saida">Entrada e saída</a></li>
+    </ol>
+    <div class="sbox red">
+      <strong>Pré-requisito</strong>
+      Siga o capítulo de Setup Inicial antes de começar as aulas de Ruby.
+    </div>
+    <div class="sbox green">
+      <strong>Objetivo desta aula</strong>
+      Escrever e executar seus primeiros programas Ruby com confiança.
+    </div>
+  </aside>
+
+  <main class="content">
+
+
+    <!-- SETUP INICIAL -->
+
+  </main>
+</div>
+
+<div class="hero-section hero-rotina">
+  <div class="hero-section-inner">
+    <div class="hero-pixel-art">
+      <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="height:80px;width:auto">
+  <rect width="200" height="80" fill="#1A0F2E"/>
+  <rect width="200" height="40" fill="#2A1A3E"/>
+  <rect x="80" y="30" width="40" height="4" fill="#FAB387" opacity=".2"/>
+  <rect x="70" y="34" width="60" height="4" fill="#FAB387" opacity=".3"/>
+  <rect x="60" y="38" width="80" height="4" fill="#F9C784" opacity=".4"/>
+  <rect x="90" y="22" width="20" height="20" rx="10" fill="#F2C94C"/>
+  <rect x="12" y="8" width="2" height="2" fill="#FFF" opacity=".4"/>
+  <rect x="50" y="6" width="2" height="2" fill="#FFF" opacity=".3"/>
+  <rect x="160" y="10" width="2" height="2" fill="#FFF" opacity=".4"/>
+  <rect x="0" y="56" width="200" height="24" fill="#12071E"/>
+  <rect x="0" y="54" width="200" height="2" fill="#FAB387" opacity=".3"/>
+  <rect x="20" y="30" width="50" height="28" rx="2" fill="#0D1117" stroke="#89B4FA" stroke-width="1"/>
+  <rect x="20" y="30" width="50" height="8" fill="#161B22"/>
+  <rect x="22" y="32" width="3" height="3" fill="#FF5F57"/>
+  <rect x="27" y="32" width="3" height="3" fill="#FEBC2E"/>
+  <rect x="32" y="32" width="3" height="3" fill="#28C840"/>
+  <rect x="22" y="40" width="42" height="2" fill="#CDD6F4" opacity=".7"/>
+  <rect x="22" y="44" width="36" height="2" fill="#CDD6F4" opacity=".5"/>
+  <rect x="22" y="48" width="28" height="2" fill="#CDD6F4" opacity=".3"/>
+  <rect x="16" y="58" width="58" height="4" fill="#21262D" rx="1"/>
+  <rect x="82" y="46" width="16" height="14" rx="2" fill="#21262D" stroke="#FAB387" stroke-width="1"/>
+  <rect x="84" y="48" width="12" height="10" fill="#7B3F00" opacity=".6"/>
+  <rect x="114" y="36" width="50" height="32" rx="2" fill="#1E1E2E" stroke="#CBA6F7" stroke-width="1"/>
+  <rect x="117" y="38" width="20" height="2" fill="#CBA6F7" opacity=".8"/>
+  <rect x="117" y="50" width="44" height="2" fill="#6C7086" opacity=".7"/>
+  <rect x="117" y="54" width="38" height="2" fill="#6C7086" opacity=".5"/>
+  <rect x="170" y="46" width="6" height="4" fill="#FF6B6B"/>
+  <rect x="168" y="50" width="10" height="6" fill="#FF4444"/>
+  <rect x="170" y="56" width="6" height="4" fill="#CC0000"/></svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-module-label">Hábito 01</div>
+      <div class="hero-title">Rotina Diária</div>
+      <div class="hero-sub">Desenvolvedores que crescem rápido não só praticam — eles se mantêm atualizados. Comece o dia lendo.</div>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <aside class="sidebar-ghost"></aside>
+  <main class="content">
+
+<div class="chapter" id="rotina-diaria">
+      <div class="chapter-num">Antes de tudo</div>
+      <h2>Rotina diária de leitura</h2>
+
+      <p>Programar bem é metade técnica, metade mentalidade. Desenvolvedores que evoluem rápido não aprendem só em cursos — eles acompanham o que está acontecendo na comunidade, lêem sobre problemas reais e absorvem novidades de forma contínua.</p>
+
+      <p>A sugestão é simples: <strong>toda manhã, antes de abrir o editor de código</strong>, reserve 15 a 20 minutos para leitura. Dois recursos para começar agora:</p>
+
+      <div class="reading-grid">
+
+        <a href="https://medium.com/search?q=ruby+on+rails" target="_blank" class="reading-card">
+          <div class="reading-header">
+            <div class="reading-logo">M</div>
+            <div>
+              <div class="reading-name">Medium</div>
+              <div class="reading-type">Artigos técnicos</div>
+            </div>
+          </div>
+          <p class="reading-desc">O Medium reúne artigos escritos por desenvolvedores do mundo inteiro sobre experiências reais, soluções de problemas e boas práticas. Use a busca por <strong>Ruby on Rails</strong> para filtrar o que é relevante para você agora.</p>
+          <div class="reading-action">Assinar e ler →</div>
+        </a>
+
+        <a href="https://rubyweekly.com/" target="_blank" class="reading-card">
+          <div class="reading-header">
+            <div class="reading-logo reading-logo-ruby">Rw</div>
+            <div>
+              <div class="reading-name">Ruby Weekly</div>
+              <div class="reading-type">Newsletter semanal</div>
+            </div>
+          </div>
+          <p class="reading-desc">A newsletter mais importante da comunidade Ruby. Toda semana no seu e-mail: novidades da linguagem, artigos selecionados, lançamentos de gems e discussões da comunidade. Inscreva-se gratuitamente.</p>
+          <div class="reading-action">Inscrever-se →</div>
+        </a>
+
+      </div>
+
+      <div class="reading-routine">
+        <div class="routine-title">☀️ Como estruturar a manhã</div>
+        <div class="routine-steps">
+          <div class="routine-step">
+            <div class="routine-time">5 min</div>
+            <div class="routine-text">Abra o e-mail e leia o Ruby Weekly (quando chegar, toda semana). Se não tiver chegado, abra o Medium.</div>
+          </div>
+          <div class="routine-step">
+            <div class="routine-time">15 min</div>
+            <div class="routine-text">Leia um ou dois artigos sobre Ruby on Rails. Não precisa entender tudo agora — exposição contínua constrói familiaridade.</div>
+          </div>
+          <div class="routine-step">
+            <div class="routine-time">Depois</div>
+            <div class="routine-text">Abra o editor, revise o que foi praticado na última sessão e continue de onde parou.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Por que isso importa</span>
+        Tecnologia muda rápido. Quem acompanha a comunidade percebe tendências antes dos outros, aprende com erros que já foram cometidos por alguém e constrói um vocabulário técnico que vai aparecer naturalmente nas conversas do time.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="hero-section hero-setup">
+  <div class="hero-section-inner">
+    <div class="hero-pixel-art">
+      <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="height:80px;width:auto">
+  <rect width="200" height="80" fill="#0D1117"/>
+  <rect x="10" y="5" width="2" height="2" fill="#FFF" opacity=".8"/>
+  <rect x="40" y="12" width="2" height="2" fill="#FFF" opacity=".6"/>
+  <rect x="75" y="4" width="2" height="2" fill="#FFF" opacity=".9"/>
+  <rect x="110" y="9" width="2" height="2" fill="#FFF" opacity=".7"/>
+  <rect x="150" y="6" width="2" height="2" fill="#FFF" opacity=".5"/>
+  <rect x="0" y="64" width="200" height="16" fill="#161B22"/>
+  <rect x="0" y="62" width="200" height="2" fill="#2D9CDB" opacity=".4"/>
+  <rect x="20" y="20" width="80" height="40" rx="2" fill="#161B22" stroke="#2D9CDB" stroke-width="2"/>
+  <rect x="20" y="20" width="80" height="10" fill="#2D9CDB"/>
+  <rect x="24" y="24" width="4" height="4" fill="#FF5F57"/>
+  <rect x="30" y="24" width="4" height="4" fill="#FEBC2E"/>
+  <rect x="36" y="24" width="4" height="4" fill="#28C840"/>
+  <rect x="26" y="36" width="30" height="2" fill="#A6E3A1" opacity=".9"/>
+  <rect x="26" y="42" width="46" height="2" fill="#89B4FA" opacity=".7"/>
+  <rect x="26" y="48" width="20" height="2" fill="#CBA6F7" opacity=".8"/>
+  <rect x="48" y="48" width="6" height="2" fill="#F2C94C"/>
+  <rect x="118" y="22" width="44" height="40" rx="2" fill="#1E1E2E" stroke="#CBA6F7" stroke-width="2"/>
+  <rect x="118" y="22" width="44" height="8" fill="#CBA6F7"/>
+  <rect x="126" y="36" width="16" height="2" fill="#89B4FA"/>
+  <rect x="126" y="40" width="12" height="2" fill="#A6E3A1"/>
+  <rect x="126" y="44" width="20" height="2" fill="#FAB387"/></svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-module-label">Módulo 1</div>
+      <div class="hero-title">Setup Inicial</div>
+      <div class="hero-sub">Configure Linux e VS Code — seu ambiente base antes de instalar qualquer ferramenta.</div>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <aside class="sidebar-ghost"></aside>
+  <main class="content">
+
+<div class="chapter" id="setup-ambiente">
+      <div class="chapter-num">Setup — Parte 1</div>
+      <h2>Ambiente de desenvolvimento</h2>
+
+      <p>Antes de qualquer coisa, precisamos deixar o sistema operacional e o editor prontos. Esses dois passos são feitos uma única vez — depois disso, é só abrir o VS Code e programar.</p>
+
+      <div class="callout info">
+        <span class="callout-label">O que vamos configurar aqui</span>
+        Linux (via WSL2 ou nativo) e VS Code com as extensões certas. Git, Ruby e Claude Code têm configurações próprias nos módulos correspondentes.
+      </div>
+
+      <h3>Passo 1 — Linux</h3>
+
+      <p>Ruby e Rails vivem no mundo Linux. Servidores de produção rodam Linux, ferramentas de desenvolvimento foram criadas para Linux, e a experiência de desenvolvimento é muito mais fluida nesse ambiente. Por isso, antes de qualquer coisa, precisamos de um terminal Linux na sua máquina.</p>
+
+      <p>Você tem duas opções — escolha a que faz mais sentido para o seu momento:</p>
+
+      <div class="setup-choice">
+        <div class="choice-card">
+          <div class="choice-head">
+            <span class="choice-badge wsl">Recomendado para Windows</span>
+            <div class="choice-title">WSL2 — Windows Subsystem for Linux</div>
+          </div>
+          <div class="choice-body">
+            <p>O WSL2 instala um Linux completo <em>dentro</em> do seu Windows, sem precisar formatar o computador ou criar dual boot. Você continua usando o Windows normalmente e acessa o Linux sempre que precisar programar.</p>
+            <h4>Como instalar o WSL2</h4>
+            <p>Abra o <strong>PowerShell como Administrador</strong> (botão direito no menu Iniciar → Windows PowerShell (Admin)) e execute:</p>
+            <div class="code-block">
+              <div class="code-header">
+                <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <span>PowerShell (Admin)</span>
+              </div>
+              <div class="code-body"><pre><span class="cmd">wsl --install</span></pre></div>
+            </div>
+            <p>Esse único comando instala o WSL2 com Ubuntu. Quando terminar, <strong>reinicie o computador</strong>. Na primeira abertura do Ubuntu, ele vai pedir para você criar um nome de usuário e senha — use algo simples que você vai lembrar.</p>
+            <div class="callout tip">
+              <span class="callout-label">Dica</span>
+              Após reiniciar, procure por "Ubuntu" no menu Iniciar. Esse é o terminal Linux que você vai usar para tudo. Fixe-o na barra de tarefas.
+            </div>
+            <h4>Verificando a instalação</h4>
+            <div class="code-block">
+              <div class="code-header">
+                <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <span>Terminal Ubuntu</span>
+              </div>
+              <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">lsb_release -a</span>
+<span class="out">Ubuntu 24.04 LTS</span></pre></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="choice-card">
+          <div class="choice-head">
+            <span class="choice-badge native">Linux nativo</span>
+            <div class="choice-title">Ubuntu instalado diretamente</div>
+          </div>
+          <div class="choice-body">
+            <p>Se você já usa Linux nativamente ou quer instalar o Ubuntu como sistema principal, está no caminho ideal. O ambiente de desenvolvimento é idêntico ao de produção — sem camadas intermediárias.</p>
+            <p>Recomendamos o <strong>Ubuntu 24.04 LTS</strong> — versão estável com suporte longo e ótima compatibilidade com as ferramentas que usaremos.</p>
+            <h4>Download</h4>
+            <p>Baixe a imagem ISO em <a href="https://ubuntu.com/download/desktop" target="_blank">ubuntu.com/download/desktop</a> e siga o instalador.</p>
+            <div class="callout note">
+              <span class="callout-label">Dual boot</span>
+              Se quiser manter o Windows e o Linux no mesmo computador, é possível — basta optar pelo dual boot durante a instalação.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Passo 2 — VS Code</h3>
+
+      <p>O VS Code (Visual Studio Code) é o editor de código que vamos usar. É gratuito, leve, tem um terminal integrado e extensões para tudo que precisamos.</p>
+
+      <h4>Download e instalação</h4>
+      <p>Acesse <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a>, baixe a versão para o seu sistema e instale normalmente.</p>
+
+      <div class="callout warning">
+        <span class="callout-label">Usuários WSL2</span>
+        Instale o VS Code no <strong>Windows</strong> (não dentro do Linux). Depois, no terminal Ubuntu, navegue até a pasta do projeto e digite <code>code .</code> — o VS Code vai abrir automaticamente conectado ao WSL.
+      </div>
+
+      <h4>Extensões essenciais</h4>
+      <p>Com o VS Code aberto, instale as extensões abaixo. Use o atalho <code>Ctrl+Shift+X</code> para abrir o painel de extensões e pesquise pelo nome:</p>
+
+      <div class="ext-grid">
+        <div class="ext-card">
+          <div class="ext-name">Ruby LSP</div>
+          <div class="ext-pub">Shopify</div>
+          <div class="ext-desc">Autocompletar, navegação e diagnósticos em tempo real para código Ruby. Essencial.</div>
+        </div>
+        <div class="ext-card">
+          <div class="ext-name">WSL</div>
+          <div class="ext-pub">Microsoft</div>
+          <div class="ext-desc">Integra o VS Code com o ambiente WSL2. Necessária apenas para usuários Windows.</div>
+        </div>
+        <div class="ext-card">
+          <div class="ext-name">GitLens</div>
+          <div class="ext-pub">GitKraken</div>
+          <div class="ext-desc">Visualiza o histórico do Git direto no editor — quem alterou cada linha e quando.</div>
+        </div>
+        <div class="ext-card">
+          <div class="ext-name">Git Graph</div>
+          <div class="ext-pub">mhutchie</div>
+          <div class="ext-desc">Visualiza branches, commits e merges de forma gráfica. Muito mais claro que o log no terminal.</div>
+        </div>
+        <div class="ext-card">
+          <div class="ext-name">indent-rainbow</div>
+          <div class="ext-pub">oderwat</div>
+          <div class="ext-desc">Coloriza os níveis de indentação do código. Ajuda muito a identificar a estrutura visualmente.</div>
+        </div>
+        <div class="ext-card">
+          <div class="ext-name">Material Icon Theme</div>
+          <div class="ext-pub">Philipp Kief</div>
+          <div class="ext-desc">Ícones bonitos para cada tipo de arquivo no explorador. Facilita identificar arquivos rapidamente.</div>
+        </div>
+      </div>
+
+      <h4>Configurações recomendadas</h4>
+      <p>Abra as configurações com <code>Ctrl+Shift+P</code>, digite <strong>Open User Settings (JSON)</strong> e adicione:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>settings.json</span>
+        </div>
+        <div class="code-body"><pre><span class="pun">{</span>
+  <span class="str">"editor.fontSize"</span>: <span class="num">14</span>,
+  <span class="str">"editor.tabSize"</span>: <span class="num">2</span>,
+  <span class="str">"editor.insertSpaces"</span>: <span class="kw">true</span>,
+  <span class="str">"editor.formatOnSave"</span>: <span class="kw">true</span>,
+  <span class="str">"editor.wordWrap"</span>: <span class="str">"on"</span>,
+  <span class="str">"files.autoSave"</span>: <span class="str">"afterDelay"</span>,
+  <span class="str">"terminal.integrated.defaultProfile.linux"</span>: <span class="str">"bash"</span>
+<span class="pun">}</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Pronto por aqui</span>
+        Com Linux e VS Code configurados, seu ambiente base está pronto. O próximo passo é instalar e aprender Git — que tem um módulo inteiro dedicado logo abaixo.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="hero-section hero-git">
+  <div class="hero-section-inner">
+    <div class="hero-pixel-art">
+      <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="height:80px;width:auto">
+  <rect width="200" height="80" fill="#0D1117"/>
+  <rect x="15" y="6" width="2" height="2" fill="#FFF" opacity=".7"/>
+  <rect x="90" y="5" width="2" height="2" fill="#FFF" opacity=".8"/>
+  <rect x="175" y="4" width="2" height="2" fill="#F2C94C" opacity=".9"/>
+  <rect x="0" y="62" width="200" height="18" fill="#0A1500"/>
+  <rect x="0" y="60" width="200" height="2" fill="#27AE60" opacity=".5"/>
+  <rect x="10" y="40" width="180" height="4" fill="#2D9CDB" opacity=".8"/>
+  <rect x="30" y="36" width="12" height="12" rx="6" fill="#2D9CDB"/>
+  <rect x="80" y="36" width="12" height="12" rx="6" fill="#2D9CDB"/>
+  <rect x="130" y="36" width="12" height="12" rx="6" fill="#F2C94C"/>
+  <rect x="168" y="36" width="12" height="12" rx="6" fill="#9B51E0"/>
+  <rect x="86" y="20" width="4" height="20" fill="#27AE60" opacity=".7"/>
+  <rect x="86" y="20" width="56" height="4" fill="#27AE60" opacity=".7"/>
+  <rect x="138" y="20" width="4" height="20" fill="#27AE60" opacity=".7"/>
+  <rect x="98" y="16" width="12" height="12" rx="6" fill="#27AE60"/>
+  <rect x="128" y="16" width="12" height="12" rx="6" fill="#27AE60"/>
+  <rect x="168" y="26" width="2" height="10" fill="#F2C94C"/>
+  <rect x="164" y="22" width="10" height="4" fill="#F2C94C"/></svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-module-label">Módulo 2</div>
+      <div class="hero-title">Git &amp; GitHub</div>
+      <div class="hero-sub">Aprenda a versionar, colaborar e nunca mais perder código. Do primeiro commit ao Pull Request.</div>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <aside class="sidebar-ghost"></aside>
+  <main class="content">
+
+<div class="chapter" id="git-intro">
+      <div class="chapter-num">Módulo 2 — Git & GitHub</div>
+      <h2>Antes de começar</h2>
+
+      <p>Git e GitHub são ferramentas que você vai usar <strong>todo dia</strong> como desenvolvedor — em qualquer empresa, em qualquer projeto. Antes de entrar no conteúdo prático, comece assistindo ao vídeo abaixo e use o curso da Udemy como reforço assíncrono antes de avançar para o módulo de Ruby.</p>
+
+      <h3>Recursos para começar</h3>
+
+      <div class="resource-grid">
+        <a href="https://www.youtube.com/watch?v=ts-H3W1uLMM" target="_blank" class="resource-card">
+          <div class="resource-icon">▶</div>
+          <div class="resource-body">
+            <div class="resource-type">Vídeo — YouTube</div>
+            <div class="resource-title">Git e GitHub do zero</div>
+            <div class="resource-desc">Assista primeiro. Ele dá a visão geral de Git e GitHub antes das Quests e deixa os comandos do módulo mais familiares.</div>
+          </div>
+        </a>
+        <a href="https://www.udemy.com/course/git-e-github-para-iniciantes/" target="_blank" class="resource-card">
+          <div class="resource-icon">🎓</div>
+          <div class="resource-body">
+            <div class="resource-type">Curso — Udemy (assíncrono)</div>
+            <div class="resource-title">Git e GitHub para iniciantes</div>
+            <div class="resource-desc">Faça no seu ritmo, entre as sessões. A meta é concluir ou avançar bem no curso antes de chegar ao módulo de Ruby.</div>
+          </div>
+        </a>
+      </div>
+
+      <h3>O que você vai precisar fazer neste módulo</h3>
+      <p>Ao entrar no módulo de Git, você já sabe exatamente o que vai aprender e entregar. Sem surpresas:</p>
+
+      <div class="checklist">
+        <div class="checklist-item">
+          <div class="check-num">1</div>
+          <div class="check-body">
+            <div class="check-title">Criar uma conta no GitHub</div>
+            <div class="check-desc">Acesse <a href="https://github.com/signup" target="_blank">github.com/signup</a> e crie sua conta gratuita. Use um e-mail que você vai manter — sua conta no GitHub é seu portfólio profissional permanente.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="check-num">2</div>
+          <div class="check-body">
+            <div class="check-title">Clonar o repositório do curso</div>
+            <div class="check-desc">O repositório já está criado em <a href="https://github.com/gitDbits/mentoria_barbara" target="_blank">github.com/gitDbits/mentoria_barbara</a>. Você vai cloná-lo na primeira sessão juntos.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="check-num">3</div>
+          <div class="check-body">
+            <div class="check-title">Completar as 3 Quests do módulo</div>
+            <div class="check-desc"><strong>Quest 01</strong> — primeiro commit e push direto na main. <strong>Quest 02</strong> — criar um branch e fazer dois commits separados. <strong>Quest 03</strong> — fluxo completo com Pull Request e aguardar revisão do mentor.</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <div class="check-num">4</div>
+          <div class="check-body">
+            <div class="check-title">Assistir o vídeo e estudar pela Udemy</div>
+            <div class="check-desc">Comece pelo vídeo de Git e GitHub. Depois, faça o curso da Udemy de forma assíncrona, no seu ritmo, antes de avançar para o módulo de Ruby.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Como o mentor acompanha</span>
+        Cada Quest entregue no GitHub fica visível para o mentor em tempo real — commits, branches e Pull Requests. Não é necessário avisar que entregou: basta abrir o PR e o mentor vai receber a notificação.
+      </div>
+    </div>
+
+    <div class="chapter" id="o-que-e-git">
+      <div class="chapter-num">Aula 1</div>
+      <h2>O que é Git e por que usar</h2>
+
+      <p>Git é um sistema de controle de versão. Pense nele como um histórico de salvamentos do seu código — você pode ver o que mudou, quando mudou, quem mudou e, se precisar, voltar para qualquer ponto anterior. Sem Git, se você apagar algo por acidente ou introduzir um bug, pode não ter como recuperar.</p>
+
+      <p>Foi criado em 2005 por Linus Torvalds — o mesmo criador do Linux — para gerenciar contribuições de centenas de desenvolvedores no kernel do Linux. Se funciona nessa escala, funciona para tudo.</p>
+
+      <div class="callout info">
+        <span class="callout-label">Git vs GitHub</span>
+        São coisas diferentes. <strong>Git</strong> é o sistema de controle de versão que roda na sua máquina. <strong>GitHub</strong> é o serviço online onde você armazena e compartilha repositórios Git. É como a diferença entre o Word (programa) e o Google Drive (onde você salva os arquivos).
+      </div>
+
+      <h3>Como o Git enxerga seu projeto</h3>
+      <p>O Git não salva cópias de arquivos — ele salva <strong>snapshots</strong> (fotografias) do estado do projeto em cada commit. Cada snapshot sabe exatamente o que mudou em relação ao anterior, quem fez a mudança e quando.</p>
+
+      <!-- FLOW DIAGRAM -->
+      <div class="git-diagram">
+        <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- timeline line -->
+          <line x1="40" y1="80" x2="640" y2="80" stroke="#30363D" stroke-width="2"/>
+
+          <!-- commit 1 -->
+          <circle cx="100" cy="80" r="16" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="100" y="85" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">C1</text>
+          <text x="100" y="115" text-anchor="middle" fill="#8B949E" font-size="10" font-family="monospace">primeiro</text>
+          <text x="100" y="127" text-anchor="middle" fill="#8B949E" font-size="10" font-family="monospace">commit</text>
+
+          <!-- arrow -->
+          <line x1="116" y1="80" x2="194" y2="80" stroke="#30363D" stroke-width="2"/>
+          <polygon points="194,75 204,80 194,85" fill="#30363D"/>
+
+          <!-- commit 2 -->
+          <circle cx="220" cy="80" r="16" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="220" y="85" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">C2</text>
+          <text x="220" y="115" text-anchor="middle" fill="#8B949E" font-size="10" font-family="monospace">feat: login</text>
+
+          <!-- arrow -->
+          <line x1="236" y1="80" x2="314" y2="80" stroke="#30363D" stroke-width="2"/>
+          <polygon points="314,75 324,80 314,85" fill="#30363D"/>
+
+          <!-- commit 3 -->
+          <circle cx="340" cy="80" r="16" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="340" y="85" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">C3</text>
+          <text x="340" y="115" text-anchor="middle" fill="#8B949E" font-size="10" font-family="monospace">fix: bug</text>
+
+          <!-- arrow -->
+          <line x1="356" y1="80" x2="434" y2="80" stroke="#30363D" stroke-width="2"/>
+          <polygon points="434,75 444,80 434,85" fill="#30363D"/>
+
+          <!-- commit 4 -->
+          <circle cx="460" cy="80" r="16" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="460" y="85" text-anchor="middle" fill="white" font-size="11" font-family="monospace" font-weight="bold">C4</text>
+          <text x="460" y="115" text-anchor="middle" fill="#8B949E" font-size="10" font-family="monospace">feat: busca</text>
+
+          <!-- arrow -->
+          <line x1="476" y1="80" x2="554" y2="80" stroke="#30363D" stroke-width="2"/>
+          <polygon points="554,75 564,80 554,85" fill="#30363D"/>
+
+          <!-- HEAD commit -->
+          <circle cx="580" cy="80" r="16" fill="#F2C94C" stroke="#C9A227" stroke-width="2"/>
+          <text x="580" y="85" text-anchor="middle" fill="#0D1117" font-size="11" font-family="monospace" font-weight="bold">C5</text>
+          <text x="580" y="40" text-anchor="middle" fill="#F2C94C" font-size="11" font-family="monospace" font-weight="bold">HEAD</text>
+          <line x1="580" y1="64" x2="580" y2="48" stroke="#F2C94C" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="580" y="115" text-anchor="middle" fill="#8B949E" font-size="10" font-family="monospace">atual</text>
+
+          <!-- label -->
+          <text x="40" y="30" fill="#8B949E" font-size="11" font-family="monospace">branch: main</text>
+          <rect x="30" y="16" width="110" height="18" rx="4" fill="none" stroke="#30363D" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <p>Cada bolinha é um commit — uma fotografia do projeto naquele momento. O <code>HEAD</code> sempre aponta para o commit mais recente onde você está trabalhando. Se precisar voltar para o C3, você pode — e o código vai estar exatamente como estava naquele momento.</p>
+    </div>
+
+    <!-- OS 3 ESTÁGIOS -->
+    <div class="chapter" id="tres-estagios">
+      <div class="chapter-num">Aula 2</div>
+      <h2>Os três estágios do Git</h2>
+
+      <p>Essa é a parte que a maioria das pessoas pula e depois fica confusa. O Git não salva automaticamente — você controla exatamente o que entra em cada salvamento. Para isso, existe um fluxo de três etapas:</p>
+
+      <!-- STAGE DIAGRAM -->
+      <div class="git-diagram">
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+
+          <!-- ── BOX 1: Working Directory ── -->
+          <rect x="10" y="10" width="180" height="160" rx="8" fill="#0D2137" stroke="#2D9CDB" stroke-width="2"/>
+          <!-- header -->
+          <rect x="10" y="10" width="180" height="38" rx="8" fill="#2D9CDB"/>
+          <rect x="10" y="30" width="180" height="18" fill="#2D9CDB"/>
+          <text x="100" y="34" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">Working Directory</text>
+          <!-- folder icon -->
+          <rect x="68" y="60" width="64" height="44" rx="4" fill="#2D9CDB" opacity="0.3"/>
+          <rect x="68" y="52" width="28" height="12" rx="3" fill="#2D9CDB" opacity="0.5"/>
+          <rect x="72" y="60" width="56" height="40" rx="3" fill="#2D9CDB" opacity="0.5"/>
+          <!-- files inside folder -->
+          <rect x="76"  y="68" width="14" height="18" rx="2" fill="#CDD6F4"/>
+          <rect x="94"  y="68" width="14" height="18" rx="2" fill="#CDD6F4" opacity="0.65"/>
+          <rect x="112" y="68" width="14" height="18" rx="2" fill="#CDD6F4" opacity="0.35"/>
+          <!-- caption -->
+          <text x="100" y="125" text-anchor="middle" fill="#8B949E" font-size="11" font-family="sans-serif">Crie, edite e apague</text>
+          <text x="100" y="140" text-anchor="middle" fill="#8B949E" font-size="11" font-family="sans-serif">à vontade aqui</text>
+
+          <!-- ── ARROW 1 ── -->
+          <line x1="194" y1="90" x2="248" y2="90" stroke="#555" stroke-width="2" stroke-dasharray="5,3"/>
+          <polygon points="244,83 258,90 244,97" fill="#F2C94C"/>
+          <!-- label -->
+          <rect x="192" y="104" width="72" height="20" rx="4" fill="#1A1500"/>
+          <text x="228" y="118" text-anchor="middle" fill="#F2C94C" font-size="11" font-weight="700" font-family="monospace">git add</text>
+
+          <!-- ── BOX 2: Stage ── -->
+          <rect x="260" y="10" width="180" height="160" rx="8" fill="#1A1400" stroke="#F2C94C" stroke-width="2"/>
+          <!-- header -->
+          <rect x="260" y="10" width="180" height="38" rx="8" fill="#F2C94C"/>
+          <rect x="260" y="30" width="180" height="18" fill="#F2C94C"/>
+          <text x="350" y="34" text-anchor="middle" fill="#1A1400" font-size="13" font-weight="700" font-family="sans-serif">Stage (palco)</text>
+          <!-- box icon -->
+          <polygon points="325,62 375,62 380,70 320,70" fill="#F2C94C" opacity="0.4"/>
+          <rect x="320" y="70" width="60" height="36" rx="3" fill="#F2C94C" opacity="0.3"/>
+          <rect x="323" y="70" width="54" height="36" rx="3" fill="#F2C94C" opacity="0.4"/>
+          <line x1="350" y1="62" x2="350" y2="106" stroke="#F2C94C" stroke-width="2" opacity="0.6"/>
+          <!-- files inside box -->
+          <rect x="328" y="78" width="16" height="20" rx="2" fill="#CDD6F4" opacity="0.8"/>
+          <rect x="350" y="78" width="16" height="20" rx="2" fill="#CDD6F4" opacity="0.5"/>
+          <!-- caption -->
+          <text x="350" y="125" text-anchor="middle" fill="#8B949E" font-size="11" font-family="sans-serif">Prontos para o</text>
+          <text x="350" y="140" text-anchor="middle" fill="#8B949E" font-size="11" font-family="sans-serif">próximo commit</text>
+
+          <!-- ── ARROW 2 ── -->
+          <line x1="444" y1="90" x2="498" y2="90" stroke="#555" stroke-width="2" stroke-dasharray="5,3"/>
+          <polygon points="494,83 508,90 494,97" fill="#27AE60"/>
+          <!-- label -->
+          <rect x="432" y="104" width="88" height="20" rx="4" fill="#001200"/>
+          <text x="476" y="118" text-anchor="middle" fill="#27AE60" font-size="11" font-weight="700" font-family="monospace">git commit</text>
+
+          <!-- ── BOX 3: Repositório ── -->
+          <rect x="510" y="10" width="180" height="160" rx="8" fill="#001200" stroke="#27AE60" stroke-width="2"/>
+          <!-- header -->
+          <rect x="510" y="10" width="180" height="38" rx="8" fill="#27AE60"/>
+          <rect x="510" y="30" width="180" height="18" fill="#27AE60"/>
+          <text x="600" y="34" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">Repositório</text>
+          <!-- database icon - 3 discs -->
+          <ellipse cx="600" cy="65" rx="26" ry="8" fill="#27AE60" opacity="0.5"/>
+          <rect x="574" y="65" width="52" height="14" fill="#27AE60" opacity="0.3"/>
+          <ellipse cx="600" cy="79" rx="26" ry="8" fill="#27AE60" opacity="0.5"/>
+          <rect x="574" y="79" width="52" height="14" fill="#27AE60" opacity="0.3"/>
+          <ellipse cx="600" cy="93" rx="26" ry="8" fill="#27AE60" opacity="0.5"/>
+          <!-- dots on discs -->
+          <circle cx="580" cy="65" r="3" fill="#A6E3A1"/>
+          <circle cx="580" cy="79" r="3" fill="#A6E3A1"/>
+          <circle cx="580" cy="93" r="3" fill="#A6E3A1"/>
+          <!-- caption -->
+          <text x="600" y="125" text-anchor="middle" fill="#8B949E" font-size="11" font-family="sans-serif">Histórico permanente</text>
+          <text x="600" y="140" text-anchor="middle" fill="#8B949E" font-size="11" font-family="sans-serif">com ID único</text>
+
+        </svg>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-label">Por que existe o Stage?</span>
+        Porque nem sempre você quer salvar tudo ao mesmo tempo. Imagine que você corrigiu um bug <em>e</em> começou uma feature nova no mesmo arquivo. Com o stage, você pode commitar só a correção do bug agora e deixar a feature para depois — mantendo o histórico organizado e com sentido.
+      </div>
+
+      <h3>Vendo os três estágios na prática</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — git status é seu melhor amigo</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Depois de criar ou modificar um arquivo</span>
+<span class="prm">$</span> <span class="cmd">git status</span>
+<span class="out">On branch main
+Changes not staged for commit:
+  modified:   calculadora.rb     ← no working directory</span>
+
+<span class="cmt"># Adicionar ao stage</span>
+<span class="prm">$</span> <span class="cmd">git add calculadora.rb</span>
+<span class="prm">$</span> <span class="cmd">git status</span>
+<span class="out">Changes to be committed:
+  modified:   calculadora.rb     ← no stage, pronto para commitar</span>
+
+<span class="cmt"># Criar o commit</span>
+<span class="prm">$</span> <span class="cmd">git commit -m "feat: adiciona calculadora"</span>
+<span class="prm">$</span> <span class="cmd">git status</span>
+<span class="out">nothing to commit, working tree clean  ← tudo salvo!</span></pre></div>
+      </div>
+    </div>
+
+    <!-- PRIMEIROS COMANDOS -->
+    <div class="chapter" id="primeiros-comandos">
+      <div class="chapter-num">Aula 3</div>
+      <h2>Primeiros comandos</h2>
+
+      <h3>Configuração inicial</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — uma vez só</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Identificação — aparece em todos os commits</span>
+<span class="prm">$</span> <span class="cmd">git config --global user.name "Seu Nome"</span>
+<span class="prm">$</span> <span class="cmd">git config --global user.email "seu@email.com"</span>
+
+<span class="cmt"># Verificar</span>
+<span class="prm">$</span> <span class="cmd">git config --global --list</span>
+<span class="out">user.name=Seu Nome
+user.email=seu@email.com</span></pre></div>
+      </div>
+
+      <h3>Clonando o repositório</h3>
+      <p>O repositório do curso está em <a href="https://github.com/gitDbits/mentoria_barbara" target="_blank">github.com/gitDbits/mentoria_barbara</a>. Clone para a sua máquina:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">git clone https://github.com/gitDbits/mentoria_barbara.git</span>
+<span class="prm">$</span> <span class="cmd">cd mentoria_barbara</span>
+<span class="prm">$</span> <span class="cmd">code .</span>   <span class="cmt"># abre o VS Code nesta pasta</span></pre></div>
+      </div>
+
+      <h3>O fluxo do dia a dia</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — repete isso toda vez</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># 1. Ver o que mudou</span>
+<span class="prm">$</span> <span class="cmd">git status</span>
+
+<span class="cmt"># 2. Adicionar ao stage (arquivo específico)</span>
+<span class="prm">$</span> <span class="cmd">git add arquivo.rb</span>
+
+<span class="cmt"># 2. Ou adicionar tudo de uma vez</span>
+<span class="prm">$</span> <span class="cmd">git add .</span>
+
+<span class="cmt"># 3. Commitar com mensagem descritiva</span>
+<span class="prm">$</span> <span class="cmd">git commit -m "feat: adiciona calculadora básica"</span>
+
+<span class="cmt"># 4. Enviar para o GitHub</span>
+<span class="prm">$</span> <span class="cmd">git push</span>
+
+<span class="cmt"># Ver histórico de commits</span>
+<span class="prm">$</span> <span class="cmd">git log --oneline</span>
+<span class="out">a3f2c1b feat: adiciona calculadora básica
+9d8e7f6 feat: primeiro programa ruby
+1b2c3d4 init: estrutura inicial</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Boas mensagens de commit</span>
+        Use verbos no infinitivo e seja específico. Evite <code>update</code> ou <code>fix</code> soltos. Prefira: <code>feat: adiciona tela de login</code>, <code>fix: corrige cálculo de idade</code>, <code>refactor: simplifica método de busca</code>. Seu histórico precisa contar uma história.
+      </div>
+
+      <!-- QUEST 01 -->
+      <div class="quest-block">
+        <div class="quest-header">
+          <div class="quest-pixel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16" shape-rendering="crispEdges">
+              <rect x="4" y="0" width="2" height="2" fill="#FF6B6B"/><rect x="6" y="0" width="4" height="2" fill="#FF4444"/><rect x="10" y="0" width="2" height="2" fill="#FF6B6B"/>
+              <rect x="2" y="2" width="2" height="2" fill="#FF8888"/><rect x="4" y="2" width="2" height="2" fill="#FFAAAA"/><rect x="6" y="2" width="4" height="2" fill="#FF6666"/><rect x="10" y="2" width="2" height="2" fill="#FF4444"/><rect x="12" y="2" width="2" height="2" fill="#FF8888"/>
+              <rect x="0" y="4" width="2" height="2" fill="#CC0000"/><rect x="2" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="4" y="4" width="8" height="2" fill="#FFCCCC"/><rect x="12" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="14" y="4" width="2" height="2" fill="#CC0000"/>
+              <rect x="0" y="6" width="2" height="4" fill="#CC0000"/><rect x="2" y="6" width="2" height="4" fill="#FF4444"/><rect x="4" y="6" width="8" height="4" fill="#FF8888"/><rect x="12" y="6" width="2" height="4" fill="#FF4444"/><rect x="14" y="6" width="2" height="4" fill="#CC0000"/>
+              <rect x="0" y="10" width="2" height="2" fill="#AA0000"/><rect x="2" y="10" width="2" height="2" fill="#CC0000"/><rect x="4" y="10" width="8" height="2" fill="#FF4444"/><rect x="12" y="10" width="2" height="2" fill="#CC0000"/><rect x="14" y="10" width="2" height="2" fill="#AA0000"/>
+              <rect x="2" y="12" width="2" height="2" fill="#880000"/><rect x="4" y="12" width="2" height="2" fill="#AA0000"/><rect x="6" y="12" width="4" height="2" fill="#CC0000"/><rect x="10" y="12" width="2" height="2" fill="#AA0000"/><rect x="12" y="12" width="2" height="2" fill="#880000"/>
+              <rect x="4" y="14" width="2" height="2" fill="#660000"/><rect x="6" y="14" width="4" height="2" fill="#880000"/><rect x="10" y="14" width="2" height="2" fill="#660000"/>
+            </svg>
+          </div>
+          <div class="quest-info">
+            <div class="quest-label">Quest 01 · Primeiro commit</div>
+            <div class="quest-title">Clone, commit e push</div>
+          </div>
+          <div class="quest-xp">+50 XP</div>
+        </div>
+        <div class="quest-body">
+          <ol>
+            <li>Clone o repositório que o mentor vai te enviar. Entre na pasta e abra no VS Code.</li>
+            <li>Crie a pasta <code>quests/</code> e dentro dela um arquivo chamado <code>quest01.txt</code> com o texto: <em>"Meu primeiro commit. [Seu nome], [data de hoje]."</em></li>
+            <li>Use <code>git status</code> para ver o arquivo aparecendo como "não rastreado".</li>
+            <li>Adicione ao stage com <code>git add quests/quest01.txt</code> e confira o <code>git status</code> novamente — observe a diferença.</li>
+            <li>Faça o commit: <code>git commit -m "feat: adiciona quest01"</code></li>
+            <li>Envie para o GitHub com <code>git push</code> e confirme que aparece no repositório online.</li>
+          </ol>
+          <div class="quest-delivery">
+            <span class="quest-delivery-label">📦 Entrega</span>
+            Arquivo <code>quests/quest01.txt</code> visível em <a href="https://github.com/gitDbits/mentoria_barbara" target="_blank">github.com/gitDbits/mentoria_barbara</a>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANCHES -->
+    <div class="chapter" id="branches">
+      <div class="chapter-num">Aula 4</div>
+      <h2>Branches — linhas paralelas</h2>
+
+      <p>Um branch é uma linha independente de desenvolvimento. Imagine que a <code>main</code> é a versão "oficial" do projeto. Você cria um branch para trabalhar em uma funcionalidade nova — sem mexer no que já está funcionando. Quando terminar e testar, você junta tudo de volta.</p>
+
+      <!-- BRANCH DIAGRAM -->
+      <div class="branch-visual">
+        <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- main line -->
+          <text x="20" y="74" fill="#2D9CDB" font-size="11" font-family="monospace" font-weight="bold">main</text>
+          <line x1="20" y1="90" x2="660" y2="90" stroke="#1A3A5C" stroke-width="2"/>
+
+          <!-- main commits -->
+          <circle cx="80"  cy="90" r="14" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="80"  y="95" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">C1</text>
+
+          <circle cx="180" cy="90" r="14" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="180" y="95" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">C2</text>
+
+          <!-- branch point line -->
+          <line x1="94" y1="90" x2="166" y2="90" stroke="#1A3A5C" stroke-width="2"/>
+
+          <!-- feature branch line -->
+          <text x="20" y="154" fill="#27AE60" font-size="11" font-family="monospace" font-weight="bold">quest02</text>
+          <line x1="180" y1="90" x2="280" y2="150" stroke="#1A5C30" stroke-width="2"/>
+          <line x1="280" y1="150" x2="500" y2="150" stroke="#1A5C30" stroke-width="2"/>
+
+          <!-- feature commits -->
+          <circle cx="320" cy="150" r="14" fill="#27AE60" stroke="#1A5C30" stroke-width="2"/>
+          <text x="320" y="155" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">F1</text>
+          <text x="320" y="175" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">feat: tipos</text>
+
+          <circle cx="440" cy="150" r="14" fill="#27AE60" stroke="#1A5C30" stroke-width="2"/>
+          <text x="440" y="155" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">F2</text>
+          <text x="440" y="175" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">feat: calc</text>
+
+          <!-- main continues -->
+          <line x1="194" y1="90" x2="274" y2="90" stroke="#1A3A5C" stroke-width="2"/>
+          <circle cx="290" cy="90" r="14" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="290" y="95" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">C3</text>
+          <text x="290" y="115" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">fix: setup</text>
+
+          <line x1="304" y1="90" x2="384" y2="90" stroke="#1A3A5C" stroke-width="2"/>
+          <circle cx="400" cy="90" r="14" fill="#2D9CDB" stroke="#1A6FA8" stroke-width="2"/>
+          <text x="400" y="95" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">C4</text>
+
+          <!-- merge arrow -->
+          <line x1="500" y1="150" x2="560" y2="90" stroke="#9B51E0" stroke-width="2" stroke-dasharray="4,2"/>
+          <line x1="414" y1="90" x2="554" y2="90" stroke="#1A3A5C" stroke-width="2"/>
+
+          <!-- merge commit -->
+          <circle cx="580" cy="90" r="14" fill="#9B51E0" stroke="#6B31B0" stroke-width="2"/>
+          <text x="580" y="95" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">M</text>
+          <text x="580" y="115" text-anchor="middle" fill="#9B51E0" font-size="9" font-family="monospace">merge</text>
+
+          <!-- HEAD -->
+          <line x1="594" y1="90" x2="644" y2="90" stroke="#1A3A5C" stroke-width="2"/>
+          <circle cx="650" cy="90" r="10" fill="#F2C94C" stroke="#C9A227" stroke-width="2"/>
+          <text x="650" y="94" text-anchor="middle" fill="#0D1117" font-size="8" font-family="monospace" font-weight="bold">H</text>
+          <text x="650" y="55" fill="#F2C94C" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">HEAD</text>
+          <line x1="650" y1="80" x2="650" y2="62" stroke="#F2C94C" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+          <!-- legend -->
+          <circle cx="30" cy="190" r="6" fill="#2D9CDB"/>
+          <text x="42" y="194" fill="#8B949E" font-size="10" font-family="monospace">commit main</text>
+          <circle cx="140" cy="190" r="6" fill="#27AE60"/>
+          <text x="152" y="194" fill="#8B949E" font-size="10" font-family="monospace">commit feature</text>
+          <circle cx="270" cy="190" r="6" fill="#9B51E0"/>
+          <text x="282" y="194" fill="#8B949E" font-size="10" font-family="monospace">merge</text>
+          <circle cx="355" cy="190" r="6" fill="#F2C94C"/>
+          <text x="367" y="194" fill="#8B949E" font-size="10" font-family="monospace">HEAD (posição atual)</text>
+        </svg>
+      </div>
+
+      <h3>Trabalhando com branches</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — branches</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Ver todos os branches</span>
+<span class="prm">$</span> <span class="cmd">git branch</span>
+<span class="out">* main</span>
+
+<span class="cmt"># Criar e entrar no branch ao mesmo tempo</span>
+<span class="prm">$</span> <span class="cmd">git checkout -b quest02</span>
+<span class="out">Switched to a new branch 'quest02'</span>
+
+<span class="cmt"># Confirmar em qual branch você está</span>
+<span class="prm">$</span> <span class="cmd">git branch</span>
+<span class="out">  main
+* quest02    ← asterisco = branch atual</span>
+
+<span class="cmt"># Voltar para a main</span>
+<span class="prm">$</span> <span class="cmd">git checkout main</span>
+
+<span class="cmt"># Deletar um branch (depois do merge)</span>
+<span class="prm">$</span> <span class="cmd">git branch -d quest02</span>
+
+<span class="cmt"># Comparar diferenças entre dois branches</span>
+<span class="prm">$</span> <span class="cmd">git diff main quest02</span></pre></div>
+      </div>
+
+      <h3>Merge — juntando tudo</h3>
+      <p>Quando seu trabalho no branch está pronto, você junta de volta na <code>main</code>. Nas Quests isso vai acontecer via Pull Request no GitHub — você abre o PR, o mentor revisa o código e faz o merge. Mas é bom entender como funciona localmente também:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — merge</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Estando na main, juntar o branch quest02</span>
+<span class="prm">$</span> <span class="cmd">git checkout main</span>
+<span class="prm">$</span> <span class="cmd">git merge quest02</span>
+<span class="out">Updating 9d8e7f6..a3f2c1b
+Fast-forward
+ quests/quest02.txt | 2 ++
+ 1 file changed, 15 insertions(+)</span></pre></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-label">E se houver conflito?</span>
+        Conflito acontece quando dois branches modificaram a mesma linha do mesmo arquivo. O Git pausa o merge e marca os conflitos no arquivo. Você abre o arquivo no VS Code, escolhe qual versão manter, salva e faz um novo commit. O VS Code mostra os conflitos de forma visual — muito mais fácil do que resolver no terminal.
+      </div>
+
+      <!-- QUEST 02 -->
+      <div class="quest-block">
+        <div class="quest-header">
+          <div class="quest-pixel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16" shape-rendering="crispEdges">
+              <rect x="4" y="0" width="2" height="2" fill="#FF6B6B"/><rect x="6" y="0" width="4" height="2" fill="#FF4444"/><rect x="10" y="0" width="2" height="2" fill="#FF6B6B"/>
+              <rect x="2" y="2" width="2" height="2" fill="#FF8888"/><rect x="4" y="2" width="2" height="2" fill="#FFAAAA"/><rect x="6" y="2" width="4" height="2" fill="#FF6666"/><rect x="10" y="2" width="2" height="2" fill="#FF4444"/><rect x="12" y="2" width="2" height="2" fill="#FF8888"/>
+              <rect x="0" y="4" width="2" height="2" fill="#CC0000"/><rect x="2" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="4" y="4" width="8" height="2" fill="#FFCCCC"/><rect x="12" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="14" y="4" width="2" height="2" fill="#CC0000"/>
+              <rect x="0" y="6" width="2" height="4" fill="#CC0000"/><rect x="2" y="6" width="2" height="4" fill="#FF4444"/><rect x="4" y="6" width="8" height="4" fill="#FF8888"/><rect x="12" y="6" width="2" height="4" fill="#FF4444"/><rect x="14" y="6" width="2" height="4" fill="#CC0000"/>
+              <rect x="0" y="10" width="2" height="2" fill="#AA0000"/><rect x="2" y="10" width="2" height="2" fill="#CC0000"/><rect x="4" y="10" width="8" height="2" fill="#FF4444"/><rect x="12" y="10" width="2" height="2" fill="#CC0000"/><rect x="14" y="10" width="2" height="2" fill="#AA0000"/>
+              <rect x="2" y="12" width="2" height="2" fill="#880000"/><rect x="4" y="12" width="2" height="2" fill="#AA0000"/><rect x="6" y="12" width="4" height="2" fill="#CC0000"/><rect x="10" y="12" width="2" height="2" fill="#AA0000"/><rect x="12" y="12" width="2" height="2" fill="#880000"/>
+              <rect x="4" y="14" width="2" height="2" fill="#660000"/><rect x="6" y="14" width="4" height="2" fill="#880000"/><rect x="10" y="14" width="2" height="2" fill="#660000"/>
+            </svg>
+          </div>
+          <div class="quest-info">
+            <div class="quest-label">Quest 02 · Branches</div>
+            <div class="quest-title">Trabalhar em um branch separado</div>
+          </div>
+          <div class="quest-xp">+80 XP</div>
+        </div>
+        <div class="quest-body">
+          <ol>
+            <li>Certifique-se de estar na <code>main</code> com <code>git branch</code>. Se não estiver, faça <code>git checkout main</code>.</li>
+            <li>Crie e entre em um novo branch: <code>git checkout -b quest02</code></li>
+            <li>Crie o arquivo <code>quests/quest02.txt</code> com o texto: <em>"Branch quest02 criado."</em> Faça o primeiro commit: <code>git commit -m "feat: cria quest02"</code></li>
+            <li>Abra o mesmo arquivo e adicione uma segunda linha: <em>"Essa linha foi adicionada no segundo commit."</em> Faça o segundo commit: <code>git commit -m "feat: adiciona segunda linha"</code></li>
+            <li>Envie o branch para o GitHub: <code>git push origin quest02</code></li>
+            <li>Use <code>git log --oneline</code> para ver os dois commits no branch e compare com <code>git log --oneline main</code> — observe que esses commits não existem na main.</li>
+          </ol>
+          <div class="quest-delivery">
+            <span class="quest-delivery-label">📦 Entrega</span>
+            Branch <code>quest02</code> visível no GitHub com os dois commits separados. O mentor vai revisar o histórico antes de fazer o merge.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPOSITÓRIO REMOTO -->
+    <div class="chapter" id="remoto">
+      <div class="chapter-num">Aula 5</div>
+      <h2>Repositório remoto e Pull Request</h2>
+
+      <p>O repositório remoto é a versão do projeto que fica no GitHub. Você trabalha localmente e sincroniza com o remoto através de <code>push</code> e <code>pull</code>.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — sincronização</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Enviar commits para o GitHub</span>
+<span class="prm">$</span> <span class="cmd">git push origin main</span>
+
+<span class="cmt"># Enviar um branch específico</span>
+<span class="prm">$</span> <span class="cmd">git push origin quest03</span>
+
+<span class="cmt"># Baixar e aplicar mudanças do GitHub</span>
+<span class="prm">$</span> <span class="cmd">git pull origin main</span>
+
+<span class="cmt"># Ver os remotos configurados</span>
+<span class="prm">$</span> <span class="cmd">git remote -v</span>
+<span class="out">origin  https://github.com/gitDbits/mentoria_barbara.git (fetch)
+origin  https://github.com/gitDbits/mentoria_barbara.git (push)</span></pre></div>
+      </div>
+
+      <h3>Pull Request — o fluxo de revisão</h3>
+      <p>Um Pull Request (PR) é um pedido para juntar seu branch na <code>main</code>. Antes do merge, o mentor lê seu código, deixa comentários e você pode corrigir antes de aprovar. É assim que times profissionais trabalham.</p>
+
+      <!-- PR FLOW DIAGRAM -->
+      <div class="git-diagram">
+        <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- steps -->
+          <rect x="10"  y="40" width="110" height="50" rx="6" fill="#1A1A2E" stroke="#2D9CDB" stroke-width="1.5"/>
+          <text x="65"  y="62" text-anchor="middle" fill="#2D9CDB" font-size="10" font-family="monospace" font-weight="bold">1. branch</text>
+          <text x="65"  y="76" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">git checkout -b</text>
+          <text x="65"  y="88" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">quest03</text>
+
+          <polygon points="125,65 140,65 132,75" fill="#30363D" transform="rotate(-90 132 65)"/>
+          <text x="132" y="30" text-anchor="middle" fill="#30363D" font-size="18">→</text>
+
+          <rect x="145" y="40" width="110" height="50" rx="6" fill="#1A1A2E" stroke="#27AE60" stroke-width="1.5"/>
+          <text x="200" y="62" text-anchor="middle" fill="#27AE60" font-size="10" font-family="monospace" font-weight="bold">2. commits</text>
+          <text x="200" y="76" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">git add .</text>
+          <text x="200" y="88" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">git commit -m</text>
+
+          <text x="267" y="70" text-anchor="middle" fill="#30363D" font-size="18">→</text>
+
+          <rect x="280" y="40" width="110" height="50" rx="6" fill="#1A1A2E" stroke="#F2C94C" stroke-width="1.5"/>
+          <text x="335" y="62" text-anchor="middle" fill="#F2C94C" font-size="10" font-family="monospace" font-weight="bold">3. push</text>
+          <text x="335" y="76" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">git push</text>
+          <text x="335" y="88" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">origin quest03</text>
+
+          <text x="402" y="70" text-anchor="middle" fill="#30363D" font-size="18">→</text>
+
+          <rect x="415" y="40" width="110" height="50" rx="6" fill="#1A1A2E" stroke="#9B51E0" stroke-width="1.5"/>
+          <text x="470" y="62" text-anchor="middle" fill="#9B51E0" font-size="10" font-family="monospace" font-weight="bold">4. PR</text>
+          <text x="470" y="76" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">abrir no</text>
+          <text x="470" y="88" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">GitHub</text>
+
+          <text x="537" y="70" text-anchor="middle" fill="#30363D" font-size="18">→</text>
+
+          <rect x="550" y="40" width="110" height="50" rx="6" fill="#1A1A2E" stroke="#CC0000" stroke-width="1.5"/>
+          <text x="605" y="62" text-anchor="middle" fill="#CC0000" font-size="10" font-family="monospace" font-weight="bold">5. review</text>
+          <text x="605" y="76" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">mentor revisa</text>
+          <text x="605" y="88" text-anchor="middle" fill="#8B949E" font-size="9" font-family="monospace">→ merge</text>
+        </svg>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Dica de ouro</span>
+        Sempre faça <code>git pull origin main</code> antes de começar a trabalhar e antes de fazer <code>git push</code>. Isso garante que você está sincronizado e evita conflitos desnecessários.
+      </div>
+
+      <!-- QUEST 03 -->
+      <div class="quest-block quest-bonus">
+        <div class="quest-header">
+          <div class="quest-pixel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16" shape-rendering="crispEdges">
+              <rect x="4" y="0" width="2" height="2" fill="#FF6B6B"/><rect x="6" y="0" width="4" height="2" fill="#FF4444"/><rect x="10" y="0" width="2" height="2" fill="#FF6B6B"/>
+              <rect x="2" y="2" width="2" height="2" fill="#FF8888"/><rect x="4" y="2" width="2" height="2" fill="#FFAAAA"/><rect x="6" y="2" width="4" height="2" fill="#FF6666"/><rect x="10" y="2" width="2" height="2" fill="#FF4444"/><rect x="12" y="2" width="2" height="2" fill="#FF8888"/>
+              <rect x="0" y="4" width="2" height="2" fill="#CC0000"/><rect x="2" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="4" y="4" width="8" height="2" fill="#FFCCCC"/><rect x="12" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="14" y="4" width="2" height="2" fill="#CC0000"/>
+              <rect x="0" y="6" width="2" height="4" fill="#CC0000"/><rect x="2" y="6" width="2" height="4" fill="#FF4444"/><rect x="4" y="6" width="8" height="4" fill="#FF8888"/><rect x="12" y="6" width="2" height="4" fill="#FF4444"/><rect x="14" y="6" width="2" height="4" fill="#CC0000"/>
+              <rect x="0" y="10" width="2" height="2" fill="#AA0000"/><rect x="2" y="10" width="2" height="2" fill="#CC0000"/><rect x="4" y="10" width="8" height="2" fill="#FF4444"/><rect x="12" y="10" width="2" height="2" fill="#CC0000"/><rect x="14" y="10" width="2" height="2" fill="#AA0000"/>
+              <rect x="2" y="12" width="2" height="2" fill="#880000"/><rect x="4" y="12" width="2" height="2" fill="#AA0000"/><rect x="6" y="12" width="4" height="2" fill="#CC0000"/><rect x="10" y="12" width="2" height="2" fill="#AA0000"/><rect x="12" y="12" width="2" height="2" fill="#880000"/>
+              <rect x="4" y="14" width="2" height="2" fill="#660000"/><rect x="6" y="14" width="4" height="2" fill="#880000"/><rect x="10" y="14" width="2" height="2" fill="#660000"/>
+            </svg>
+          </div>
+          <div class="quest-info">
+            <div class="quest-label">Quest 03 ⭐ Bônus · Pull Request completo</div>
+            <div class="quest-title">O fluxo real de um time</div>
+          </div>
+          <div class="quest-xp">+120 XP</div>
+        </div>
+        <div class="quest-body">
+          <ol>
+            <li>Atualize seu repositório local: <code>git pull origin main</code></li>
+            <li>Crie o branch: <code>git checkout -b quest03</code></li>
+            <li>Crie o arquivo <code>quests/quest03.txt</code> com o texto: <em>"Iniciando a Quest 03."</em> Faça o primeiro commit: <code>git commit -m "feat: cria quest03"</code></li>
+            <li>Adicione uma segunda linha ao arquivo: <em>"Aprendendo o fluxo de Pull Request."</em> Faça o segundo commit: <code>git commit -m "feat: descreve o aprendizado"</code></li>
+            <li>Adicione uma terceira linha: <em>"Pronto para revisão do mentor."</em> Faça o terceiro commit: <code>git commit -m "feat: finaliza quest03"</code></li>
+            <li>Envie o branch: <code>git push origin quest03</code></li>
+            <li>No GitHub, abra um Pull Request de <code>quest03 → main</code>. Na descrição, escreva o que você praticou nesta quest.</li>
+            <li>Aguarde o code review do mentor. Se receber comentários, corrija, faça novo commit no mesmo branch — o PR atualiza automaticamente.</li>
+          </ol>
+          <div class="quest-delivery">
+            <span class="quest-delivery-label">📦 Entrega</span>
+            Pull Request aberto no GitHub de <code>quest03 → main</code> com descrição preenchida e três commits no histórico. Não faça o merge — aguarde a aprovação do mentor.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESFAZENDO ERROS -->
+    <div class="chapter" id="desfazendo">
+      <div class="chapter-num">Aula 6</div>
+      <h2>Desfazendo erros</h2>
+
+      <p>Uma das maiores vantagens do Git é poder desfazer. Errou? Calma. Tem solução para quase tudo.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — situações comuns</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Errei a mensagem do último commit (antes do push)</span>
+<span class="prm">$</span> <span class="cmd">git commit --amend -m "mensagem corrigida"</span>
+
+<span class="cmt"># Quero tirar um arquivo do stage (sem perder as mudanças)</span>
+<span class="prm">$</span> <span class="cmd">git reset arquivo.rb</span>
+
+<span class="cmt"># Quero descartar todas as mudanças em um arquivo</span>
+<span class="prm">$</span> <span class="cmd">git checkout -- arquivo.rb</span>
+
+<span class="cmt"># Preciso trocar de branch mas não quero commitar ainda</span>
+<span class="prm">$</span> <span class="cmd">git stash</span>          <span class="cmt"># guarda as mudanças temporariamente</span>
+<span class="prm">$</span> <span class="cmd">git checkout main</span>  <span class="cmt"># vai para outro branch</span>
+<span class="prm">$</span> <span class="cmd">git stash pop</span>     <span class="cmt"># restaura as mudanças guardadas</span>
+
+<span class="cmt"># Desfazer o último commit (mantendo as mudanças no working dir)</span>
+<span class="prm">$</span> <span class="cmd">git reset HEAD~1</span></pre></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-label">Cuidado com --hard</span>
+        O <code>git reset --hard</code> descarta as mudanças permanentemente — não tem desfazer. Use com atenção e só quando tiver certeza de que não precisa do que vai ser apagado.
+      </div>
+    </div>
+
+    <!-- REFERÊNCIA RÁPIDA -->
+    <div class="chapter" id="referencia">
+      <div class="chapter-num">Referência</div>
+      <h2>Referência rápida de comandos</h2>
+
+      <p>Guarde esta tabela. Vai usar ela bastante nas primeiras semanas.</p>
+
+      <table class="cmd-table">
+        <thead>
+          <tr><th>Comando</th><th>O que faz</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>git status</td><td>Mostra o estado atual — o que mudou, o que está no stage</td></tr>
+          <tr><td>git add .</td><td>Adiciona todos os arquivos modificados ao stage</td></tr>
+          <tr><td>git add arquivo</td><td>Adiciona um arquivo específico ao stage</td></tr>
+          <tr><td>git commit -m "msg"</td><td>Cria um commit com a mensagem informada</td></tr>
+          <tr><td>git push</td><td>Envia os commits locais para o GitHub</td></tr>
+          <tr><td>git pull origin main</td><td>Baixa e aplica as mudanças do GitHub</td></tr>
+          <tr><td>git clone URL</td><td>Baixa um repositório remoto para sua máquina</td></tr>
+          <tr><td>git log --oneline</td><td>Mostra o histórico de commits de forma resumida</td></tr>
+          <tr><td>git branch</td><td>Lista todos os branches</td></tr>
+          <tr><td>git checkout -b nome</td><td>Cria e entra em um novo branch</td></tr>
+          <tr><td>git checkout main</td><td>Volta para o branch principal</td></tr>
+          <tr><td>git merge branch</td><td>Junta outro branch no branch atual</td></tr>
+          <tr><td>git diff</td><td>Mostra as diferenças entre working dir e stage</td></tr>
+          <tr><td>git stash</td><td>Guarda mudanças temporariamente sem commitar</td></tr>
+          <tr><td>git stash pop</td><td>Restaura as mudanças guardadas com stash</td></tr>
+          <tr><td>git reset HEAD~1</td><td>Desfaz o último commit (mantendo as mudanças)</td></tr>
+          <tr><td>git commit --amend</td><td>Corrige o último commit (antes do push)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<div class="hero-section hero-ruby">
+  <div class="hero-section-inner">
+    <div class="hero-pixel-art">
+      <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="height:80px;width:auto">
+  <rect width="200" height="80" fill="#1A0000"/>
+  <rect x="8" y="8" width="2" height="2" fill="#FFF" opacity=".6"/>
+  <rect x="45" y="5" width="2" height="2" fill="#FFF" opacity=".8"/>
+  <rect x="155" y="6" width="2" height="2" fill="#FFF" opacity=".7"/>
+  <rect x="88" y="10" width="8" height="8" fill="#FF6B6B"/>
+  <rect x="84" y="18" width="16" height="6" fill="#FF4444"/>
+  <rect x="80" y="24" width="24" height="2" fill="#FFCCCC"/>
+  <rect x="78" y="26" width="28" height="14" fill="#FF6666"/>
+  <rect x="80" y="26" width="24" height="4" fill="#FFAAAA"/>
+  <rect x="80" y="40" width="24" height="4" fill="#FF4444"/>
+  <rect x="82" y="44" width="20" height="4" fill="#CC0000"/>
+  <rect x="86" y="48" width="12" height="4" fill="#880000"/>
+  <rect x="90" y="52" width="4" height="4" fill="#660000"/>
+  <rect x="30" y="30" width="6" height="4" fill="#FF6B6B" opacity=".8"/>
+  <rect x="28" y="34" width="10" height="8" fill="#FF4444" opacity=".7"/>
+  <rect x="162" y="28" width="6" height="4" fill="#FF6B6B" opacity=".8"/>
+  <rect x="160" y="32" width="10" height="8" fill="#FF4444" opacity=".7"/>
+  <rect x="70" y="20" width="2" height="8" fill="#FFCCCC" opacity=".6"/>
+  <rect x="66" y="24" width="10" height="2" fill="#FFCCCC" opacity=".6"/>
+  <rect x="128" y="18" width="2" height="8" fill="#FFCCCC" opacity=".6"/>
+  <rect x="124" y="22" width="10" height="2" fill="#FFCCCC" opacity=".6"/></svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-module-label">Módulo 3</div>
+      <div class="hero-title">Ruby</div>
+      <div class="hero-sub">Aprenda a pensar como programador. Da lógica ao seu primeiro programa funcionando.</div>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <aside class="sidebar-ghost"></aside>
+  <main class="content">
+
+<div class="chapter" id="setup-ruby">
+      <div class="chapter-num">Setup — Parte 2</div>
+      <h2>Instalando Ruby e Claude Code</h2>
+
+      <p>Com o ambiente base pronto e o Git configurado, chegou a hora de instalar o Ruby. Vamos usar o <strong><a href="https://mise-versions.jdx.dev/tools/ruby" target="_blank">mise</a></strong> como gerenciador de versões e o <strong>Claude Code</strong> como ferramenta de produtividade no terminal.</p>
+
+      <h3>Passo 1 — Ruby com mise</h3>
+
+      <p>O mise (pronuncia-se "meez") é o gerenciador de versões recomendado pelo próprio criador do Rails (DHH) e usado nos guias oficiais do Ruby on Rails.</p>
+
+      <h4>Instalando as dependências</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">sudo apt update</span>
+<span class="prm">$</span> <span class="cmd">sudo apt install -y build-essential rustc libssl-dev   libyaml-dev zlib1g-dev libgmp-dev</span></pre></div>
+      </div>
+
+      <h4>Instalando o mise</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">curl https://mise.run | sh</span>
+<span class="prm">$</span> <span class="cmd">echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc</span>
+<span class="prm">$</span> <span class="cmd">source ~/.bashrc</span>
+<span class="prm">$</span> <span class="cmd">mise --version</span>
+<span class="out">mise 2024.x.x</span></pre></div>
+      </div>
+
+      <h4>Instalando o Ruby 4.0.5</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Instalar o Ruby 4.0.5 globalmente</span>
+<span class="prm">$</span> <span class="cmd">mise use -g ruby@4.0.5</span>
+<span class="out">mise ruby@4.0.5 installed</span>
+
+<span class="prm">$</span> <span class="cmd">ruby --version</span>
+<span class="out">ruby 4.0.5 [x86_64-linux]</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Versão mais recente</span>
+        Estamos instalando o Ruby 4.0.5 — a versão mais atual. Documentação oficial em <a href="https://www.ruby-lang.org/pt/" target="_blank">ruby-lang.org</a>.
+      </div>
+
+      <div class="callout info">
+        <span class="callout-label">Por projeto</span>
+        Dentro de um projeto, use <code>mise use ruby@4.0.5</code> sem o <code>-g</code>. O mise cria um <code>.mise.toml</code> garantindo que todos usem a mesma versão.
+      </div>
+
+      <h3>Passo 2 — Claude Code</h3>
+
+      <p>O Claude Code roda direto no terminal e entende o contexto do seu projeto. Use para entender erros, explorar soluções e revisar código.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Node.js via nvm</span>
+<span class="prm">$</span> <span class="cmd">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span>
+<span class="prm">$</span> <span class="cmd">source ~/.bashrc</span>
+<span class="prm">$</span> <span class="cmd">nvm install --lts</span>
+
+<span class="cmt"># Claude Code</span>
+<span class="prm">$</span> <span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+<span class="prm">$</span> <span class="cmd">claude --version</span></pre></div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-label">Usando com responsabilidade</span>
+        O raciocínio precisa ser seu — o Claude Code é o auxílio, não o autor.
+      </div>
+
+      <h3>Verificação final</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal — checklist</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">ruby --version</span>     <span class="cmt"># ruby 4.0.5</span>
+<span class="prm">$</span> <span class="cmd">mise --version</span>     <span class="cmt"># gerenciador de versões</span>
+<span class="prm">$</span> <span class="cmd">gem --version</span>      <span class="cmt"># gems do Ruby</span>
+<span class="prm">$</span> <span class="cmd">node --version</span>     <span class="cmt"># v20.x ou superior</span>
+<span class="prm">$</span> <span class="cmd">claude --version</span>   <span class="cmt"># Claude Code</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Tudo verde?</span>
+        Ambiente completo. Pode avançar para a Introdução ao Ruby!
+      </div>
+    </div>
+
+
+    <div class="chapter" id="introducao">
+      <div class="chapter-num">Aula 1</div>
+      <h2>Introdução ao Ruby</h2>
+
+      <p>Ruby é uma linguagem de programação criada em 1995 pelo japonês Yukihiro Matsumoto — conhecido carinhosamente como <strong>Matz</strong>. O objetivo dele era simples e ao mesmo tempo ambicioso: criar uma linguagem que fosse <em>divertida de usar</em> e que fizesse os programadores felizes. Trinta anos depois, o Ruby está na versão 4.0.5 e tem uma comunidade ativa em todos os continentes.</p>
+
+      <p>O framework que você vai dominar nesta mentoria — o <strong>Ruby on Rails</strong> — foi construído em cima do Ruby por David Heinemeier Hansson (DHH) e lançado em 2004. Rails e Ruby são inseparáveis: entender Ruby bem é o que vai fazer o Rails fazer sentido para você.</p>
+
+      <h3>Por que Ruby?</h3>
+      <p>Existem dezenas de linguagens de programação no mundo. O que torna o Ruby especial — especialmente para quem está começando agora?</p>
+
+      <ul>
+        <li><strong>Sintaxe natural.</strong> Ruby foi projetado para se ler como linguagem falada. Você vai conseguir entender o que um trecho de código faz mesmo sem ter aprendido aquele recurso ainda. Isso acelera muito o aprendizado.</li>
+        <li><strong>Expressivo e produtivo.</strong> Você faz mais com menos código. A mesma lógica que levaria 20 linhas em outras linguagens pode ser expressa em 5 linhas de Ruby — sem perder clareza.</li>
+        <li><strong>Orientado a objetos.</strong> Tudo em Ruby é um objeto. Até um número simples como <code>42</code> tem métodos. Você vai entender o que isso significa ao longo do curso — e vai fazer todo sentido quando chegar no Rails.</li>
+        <li><strong>Tipagem dinâmica.</strong> Você não precisa declarar que uma variável é número ou texto. O Ruby descobre sozinho a partir do valor que você atribui.</li>
+        <li><strong>Interpretado.</strong> Você escreve o código e executa na hora. Não precisa "compilar" nada antes de ver o resultado — o ciclo de aprendizado é muito mais rápido.</li>
+        <li><strong>Ecossistema rico.</strong> Mais de 200 mil bibliotecas prontas (chamadas de <strong>gems</strong>) cobrem desde integração com APIs até geração de PDFs, processamento de imagens e muito mais. Você raramente vai precisar construir algo do zero.</li>
+      </ul>
+
+      <div class="callout info">
+        <span class="callout-label">A filosofia do Ruby</span>
+        O lema da comunidade Ruby é <strong>MINASWAN</strong> — <em>"Matz is nice and so we are nice"</em>. É uma comunidade conhecida por acolher quem está começando, compartilhar conhecimento e ajudar sem julgamento. Você está entrando num lugar bom.
+      </div>
+
+      <h3>O que as pessoas dizem sobre o Ruby</h3>
+
+      <p>David Heinemeier Hansson, criador do Ruby on Rails, descreve assim:</p>
+      <blockquote style="border-left:3px solid var(--red);padding:10px 18px;margin:16px 0;font-style:italic;color:var(--ink-2);font-size:15px;line-height:1.75;">
+        "Ruby é simplesmente a linguagem de programação mais bonita que já vi. Sua sintaxe permite expressar diretamente o que você quer — com código mínimo repetitivo e alta legibilidade."
+      </blockquote>
+
+      <p>E o próprio Matz completa:</p>
+      <blockquote style="border-left:3px solid var(--red);padding:10px 18px;margin:16px 0;font-style:italic;color:var(--ink-2);font-size:15px;line-height:1.75;">
+        "Mais de 200 mil gems, Ruby on Rails, RSpec, Bundler — tudo isso foi criado e cultivado pela comunidade. Meu desejo de fazer os programadores felizes foi realizado de maneiras que eu nunca poderia ter alcançado sozinho."
+      </blockquote>
+
+      <div class="callout tip">
+        <span class="callout-label">Ruby em 2026</span>
+        A versão atual do Ruby é a <strong>4.0.5</strong>. Ela trouxe melhorias de performance e novos recursos — e é exatamente essa versão que usaremos nesta mentoria. Você está aprendendo Ruby no seu momento mais moderno. A documentação oficial em português está em <a href="https://www.ruby-lang.org/pt/" target="_blank">ruby-lang.org/pt</a>.
+      </div>
+    </div>
+
+    <!-- PRIMEIRO PROGRAMA -->
+    <div class="chapter" id="primeiro-programa">
+      <div class="chapter-num">Aula 1</div>
+      <h2>Seu primeiro programa</h2>
+
+      <p>Todo programador tem uma tradição: o primeiro programa que escreve exibe "Hello, World!" na tela. Vamos fazer isso — mas entendendo cada peça do que está acontecendo.</p>
+
+      <h3>Criando o arquivo</h3>
+      <p>Arquivos Ruby têm a extensão <code>.rb</code>. Abra o VS Code, crie uma nova pasta chamada <code>ruby_basico</code> e dentro dela crie um arquivo chamado <code>hello.rb</code>.</p>
+
+      <h3>Escrevendo o código</h3>
+      <p>Dentro do arquivo, escreva a linha abaixo e salve:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>hello.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="fn">puts</span> <span class="str">"Olá<span class="op">,</span> mundo!"</span></pre></div>
+      </div>
+
+      <p><code>puts</code> é a instrução que manda o Ruby exibir algo na tela. Você vai usar ela o tempo todo. O texto entre aspas é o que você quer exibir.</p>
+
+      <h3>Executando o programa</h3>
+      <p>Abra o terminal integrado do VS Code (menu <strong>Terminal → Novo Terminal</strong>), navegue até a pasta e execute:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">ruby hello.rb</span>
+<span class="out">Olá<span class="op">,</span> mundo!</span></pre></div>
+      </div>
+
+      <p>Funcionou! O Ruby leu o arquivo, interpretou a instrução <code>puts</code> e exibiu o texto na tela.</p>
+
+      <h3>puts vs p — qual a diferença?</h3>
+      <p>Existem duas formas de exibir coisas no terminal em Ruby. É importante conhecer as duas:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>exemplo.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="fn">puts</span> <span class="str">"Olá<span class="op">,</span> mundo!"</span>   <span class="cmt"># exibe o texto e pula uma linha</span>
+<span class="fn">p</span>    <span class="str">"Olá<span class="op">,</span> mundo!"</span>   <span class="cmt"># exibe o texto com as aspas — útil para depurar</span>
+
+<span class="cmt"># Resultado:</span>
+<span class="out">Olá<span class="op">,</span> mundo!</span>
+<span class="out">"Olá<span class="op">,</span> mundo!"</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Quando usar cada um</span>
+        Use <code>puts</code> quando quiser exibir algo para o usuário. Use <code>p</code> quando estiver desenvolvendo e quiser ver exatamente o que está dentro de uma variável — ele mostra o tipo do dado também.
+      </div>
+
+      <h3>Comentários</h3>
+      <p>Viu o <code>#</code> nos exemplos acima? Tudo depois de <code>#</code> numa linha é um <strong>comentário</strong> — o Ruby ignora completamente. Comentários são anotações que você deixa no código para você mesma ou para outras pessoas que vão ler depois.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>comentarios.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Este programa cumprimenta a usuária</span>
+<span class="fn">puts</span> <span class="str">"Bem-vinda ao Ruby!"</span>  <span class="cmt"># isso também é um comentário</span>
+
+<span class="cmt"># puts "esta linha nunca vai executar"</span></pre></div>
+      </div>
+    </div>
+
+    <!-- IRB -->
+    <div class="chapter" id="irb">
+      <div class="chapter-num">Aula 1</div>
+      <h2>IRB — o seu playground</h2>
+
+      <p>Criar um arquivo, escrever o código, salvar e executar pode ser um processo lento quando você está aprendendo e quer testar uma ideia rápida. Para isso existe o <strong>IRB</strong> — Interactive Ruby.</p>
+
+      <p>O IRB é um ambiente onde você digita código Ruby diretamente no terminal e vê o resultado na hora, sem criar arquivo nenhum. Quando você instala o Ruby, o IRB já vem junto.</p>
+
+      <h3>Abrindo o IRB</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">irb</span>
+<span class="prm">irb(main):001&gt;</span> <span class="cmt"># cursor esperando você digitar...</span></pre></div>
+      </div>
+
+      <p>A partir daqui, tudo que você digitar será executado imediatamente ao apertar Enter:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>IRB</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">irb&gt;</span> <span class="fn">puts</span> <span class="str">"olá do IRB"</span>
+<span class="out">olá do IRB</span>
+
+<span class="prm">irb&gt;</span> <span class="num">10</span> <span class="op">+</span> <span class="num">5</span>
+<span class="out">=> 15</span>
+
+<span class="prm">irb&gt;</span> <span class="str">"Ruby"</span><span class="op">.</span><span class="fn">upcase</span>
+<span class="out">=> "RUBY"</span></pre></div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-label">IRB vs arquivo .rb</span>
+        O IRB é perfeito para testar ideias e explorar a linguagem. Mas seus programas de verdade vão sempre em arquivos <code>.rb</code> — que você salva, versiona no Git e compartilha. Use o IRB para experimentar; use arquivos para construir.
+      </div>
+
+      <p>Para sair do IRB, digite <code>exit</code> e pressione Enter.</p>
+    </div>
+
+
+
+      <!-- GIT BÁSICO -->
+
+    <!-- TIPOS DE DADOS -->
+    <div class="chapter" id="tipos-de-dados">
+      <div class="chapter-num">Aula 2</div>
+      <h2>Tipos de dados</h2>
+
+      <p>Quando você escreve um programa, está trabalhando com informações — números, textos, listas, verdadeiro ou falso. Em Ruby, cada tipo de informação tem uma classificação chamada <strong>tipo de dado</strong>.</p>
+
+      <p>A boa notícia: o Ruby descobre o tipo automaticamente. Você não precisa declarar "isso é um número" — basta escrever o número. Esse comportamento chama-se <strong>tipagem dinâmica</strong>.</p>
+
+      <h3>Os principais tipos</h3>
+
+      <table class="type-table">
+        <thead>
+          <tr><th>Tipo</th><th>Nome</th><th>O que representa</th><th>Exemplos</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Integer</td>
+            <td>Inteiro</td>
+            <td>Números sem casas decimais, positivos ou negativos</td>
+            <td><code>1</code>, <code>42</code>, <code>-7</code>, <code>1000</code></td>
+          </tr>
+          <tr>
+            <td>Float</td>
+            <td>Decimal</td>
+            <td>Números com casas decimais</td>
+            <td><code>3.14</code>, <code>9.99</code>, <code>-0.5</code></td>
+          </tr>
+          <tr>
+            <td>String</td>
+            <td>Texto</td>
+            <td>Qualquer sequência de caracteres entre aspas</td>
+            <td><code>"Ana"</code>, <code>"olá!"</code>, <code>"123"</code></td>
+          </tr>
+          <tr>
+            <td>Boolean</td>
+            <td>Lógico</td>
+            <td>Verdadeiro ou falso — para tomar decisões</td>
+            <td><code>true</code>, <code>false</code></td>
+          </tr>
+          <tr>
+            <td>Array</td>
+            <td>Lista</td>
+            <td>Uma coleção ordenada de valores</td>
+            <td><code>[1, 2, 3]</code>, <code>["a", "b"]</code></td>
+          </tr>
+          <tr>
+            <td>Hash</td>
+            <td>Dicionário</td>
+            <td>Pares de chave → valor</td>
+            <td><code>{ nome: "Ana", idade: 30 }</code></td>
+          </tr>
+          <tr>
+            <td>Symbol</td>
+            <td>Símbolo</td>
+            <td>Como uma string, mas imutável e mais eficiente na memória</td>
+            <td><code>:nome</code>, <code>:ativo</code></td>
+          </tr>
+          <tr>
+            <td>nil</td>
+            <td>Nulo</td>
+            <td>A ausência de valor — "não tem nada aqui"</td>
+            <td><code>nil</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Vendo os tipos na prática</h3>
+      <p>Em Ruby, todo valor tem um método chamado <code>.class</code> que revela qual é o seu tipo. Abra o IRB e experimente:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>IRB — descobrindo tipos</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">irb&gt;</span> <span class="num">42</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> Integer</span>
+
+<span class="prm">irb&gt;</span> <span class="num">3.14</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> Float</span>
+
+<span class="prm">irb&gt;</span> <span class="str">"texto"</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> String</span>
+
+<span class="prm">irb&gt;</span> <span class="kw">true</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> TrueClass</span>
+
+<span class="prm">irb&gt;</span> <span class="pun">[</span><span class="num">1</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span> <span class="num">3</span><span class="pun">]</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> Array</span>
+
+<span class="prm">irb&gt;</span> <span class="pun">{</span> <span class="sym">nome:</span> <span class="str">"Ana"</span> <span class="pun">}</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> Hash</span>
+
+<span class="prm">irb&gt;</span> <span class="sym">:ativo</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> Symbol</span>
+
+<span class="prm">irb&gt;</span> <span class="kw">nil</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> NilClass</span></pre></div>
+      </div>
+
+      <h3>Tipagem dinâmica — o Ruby é inteligente</h3>
+      <p>Uma das coisas mais legais do Ruby é que uma variável pode mudar de tipo ao longo do programa. Você não "declara" o tipo — o Ruby observa o valor que você atribuiu e decide:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>IRB — tipagem dinâmica</span>
+        </div>
+        <div class="code-body"><pre><span class="prm">irb&gt;</span> <span class="var">dado</span> <span class="op">=</span> <span class="num">10</span>
+<span class="prm">irb&gt;</span> <span class="var">dado</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> Integer</span>
+
+<span class="prm">irb&gt;</span> <span class="var">dado</span> <span class="op">=</span> <span class="str">"agora sou texto"</span>
+<span class="prm">irb&gt;</span> <span class="var">dado</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> String</span>
+
+<span class="prm">irb&gt;</span> <span class="var">dado</span> <span class="op">=</span> <span class="kw">true</span>
+<span class="prm">irb&gt;</span> <span class="var">dado</span><span class="op">.</span><span class="fn">class</span>
+<span class="out">=> TrueClass</span></pre></div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-label">Atenção</span>
+        Apesar do Ruby ser flexível com tipos, ele não permite misturar tipos incompatíveis em operações. Tentar somar um número com um texto vai gerar um erro. Mais à frente você vai aprender como converter tipos quando precisar.
+      </div>
+
+      <h3>Variáveis</h3>
+      <p>Uma variável é um nome que você dá a um valor para poder reutilizá-lo. Em Ruby, você cria uma variável simplesmente atribuindo um valor a ela com o sinal <code>=</code>:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>variaveis.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Criando variáveis</span>
+<span class="var">nome</span>  <span class="op">=</span> <span class="str">"Ana"</span>
+<span class="var">idade</span> <span class="op">=</span> <span class="num">28</span>
+<span class="var">ativa</span> <span class="op">=</span> <span class="kw">true</span>
+
+<span class="cmt"># Usando variáveis</span>
+<span class="fn">puts</span> <span class="var">nome</span>   <span class="cmt"># Ana</span>
+<span class="fn">puts</span> <span class="var">idade</span>  <span class="cmt"># 28</span>
+<span class="fn">puts</span> <span class="var">ativa</span>  <span class="cmt"># true</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Convenção de nomes</span>
+        Em Ruby, o padrão é usar <strong>snake_case</strong> para variáveis — palavras em minúsculas separadas por underscore: <code>nome_completo</code>, <code>data_nascimento</code>, <code>total_pedidos</code>. Você vai ver esse padrão em todo código Ruby e Rails.
+      </div>
+
+      <h3>Arrays — listas de valores</h3>
+      <p>Um array é uma lista ordenada. Cada elemento tem uma posição (chamada de índice), e a contagem começa sempre do <strong>zero</strong>:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>arrays.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="var">frutas</span> <span class="op">=</span> <span class="pun">[</span><span class="str">"maçã"</span><span class="op">,</span> <span class="str">"banana"</span><span class="op">,</span> <span class="str">"laranja"</span><span class="pun">]</span>
+
+<span class="fn">puts</span> <span class="var">frutas</span><span class="pun">[</span><span class="num">0</span><span class="pun">]</span>   <span class="cmt"># maçã     ← posição 0</span>
+<span class="fn">puts</span> <span class="var">frutas</span><span class="pun">[</span><span class="num">1</span><span class="pun">]</span>   <span class="cmt"># banana   ← posição 1</span>
+<span class="fn">puts</span> <span class="var">frutas</span><span class="pun">[</span><span class="num">2</span><span class="pun">]</span>   <span class="cmt"># laranja  ← posição 2</span>
+<span class="fn">puts</span> <span class="var">frutas</span><span class="pun">[</span><span class="num">3</span><span class="pun">]</span>   <span class="cmt"># nil      ← não existe<span class="op">,</span> retorna vazio</span>
+
+<span class="fn">puts</span> <span class="var">frutas</span><span class="op">.</span><span class="fn">length</span>  <span class="cmt"># 3 — quantos elementos tem</span></pre></div>
+      </div>
+
+      <h3>Hashes — dicionários de chave e valor</h3>
+      <p>Um hash armazena dados em pares de <strong>chave → valor</strong>. Em vez de acessar pelo número da posição, você acessa pelo nome (a chave). Isso é muito usado no Rails:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>hashes.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="var">pessoa</span> <span class="op">=</span> <span class="pun">{</span>
+  <span class="sym">nome:</span>    <span class="str">"Ana"</span><span class="op">,</span>
+  <span class="sym">cidade:</span>  <span class="str">"Porto Velho"</span><span class="op">,</span>
+  <span class="sym">ativa:</span>   <span class="kw">true</span>
+<span class="pun">}</span>
+
+<span class="fn">puts</span> <span class="var">pessoa</span><span class="pun">[</span><span class="sym">:nome</span><span class="pun">]</span>     <span class="cmt"># Ana</span>
+<span class="fn">puts</span> <span class="var">pessoa</span><span class="pun">[</span><span class="sym">:cidade</span><span class="pun">]</span>   <span class="cmt"># Porto Velho</span>
+<span class="fn">puts</span> <span class="var">pessoa</span><span class="pun">[</span><span class="sym">:ativa</span><span class="pun">]</span>    <span class="cmt"># true</span></pre></div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-label">Símbolos como chaves de hash</span>
+        No exemplo acima, <code>nome:</code>, <code>cidade:</code> e <code>ativa:</code> são <strong>símbolos</strong> — você vai vê-los o tempo todo no Rails. Eles parecem texto, mas são imutáveis e mais eficientes para identificar chaves em hashes.
+      </div>
+    </div>
+
+    <!-- OPERADORES -->
+    <div class="chapter" id="operadores">
+      <div class="chapter-num">Aula 2</div>
+      <h2>Operadores matemáticos</h2>
+
+      <p>Ruby tem todos os operadores matemáticos que você conhece — e mais um par que talvez não esteja acostumada.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>operadores.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="cmt"># Adição</span>
+<span class="fn">puts</span> <span class="num">10</span> <span class="op">+</span> <span class="num">5</span>    <span class="cmt"># 15</span>
+
+<span class="cmt"># Subtração</span>
+<span class="fn">puts</span> <span class="num">10</span> <span class="op">-</span> <span class="num">3</span>    <span class="cmt"># 7</span>
+
+<span class="cmt"># Multiplicação</span>
+<span class="fn">puts</span> <span class="num">4</span> <span class="op">*</span> <span class="num">5</span>     <span class="cmt"># 20</span>
+
+<span class="cmt"># Divisão</span>
+<span class="fn">puts</span> <span class="num">20</span> <span class="op">/</span> <span class="num">4</span>    <span class="cmt"># 5</span>
+
+<span class="cmt"># Exponenciação (potência)</span>
+<span class="fn">puts</span> <span class="num">2</span> <span class="op">**</span> <span class="num">8</span>    <span class="cmt"># 256</span>
+
+<span class="cmt"># Módulo — o RESTO da divisão</span>
+<span class="fn">puts</span> <span class="num">10</span> <span class="op">%</span> <span class="num">3</span>    <span class="cmt"># 1  (10 ÷ 3 <span class="op">=</span> 3<span class="op">,</span> sobra 1)</span>
+<span class="fn">puts</span> <span class="num">10</span> <span class="op">%</span> <span class="num">2</span>    <span class="cmt"># 0  (10 ÷ 2 <span class="op">=</span> 5<span class="op">,</span> sobra 0 — é par!)</span></pre></div>
+      </div>
+
+      <div class="callout note">
+        <span class="callout-label">Módulo — para que serve na prática?</span>
+        O operador <code>%</code> retorna o resto da divisão. Parece estranho agora, mas você vai usá-lo muito: para saber se um número é par (<code>n % 2 == 0</code>), para distribuir itens em grupos, para criar padrões que se repetem. É uma ferramenta muito útil.
+      </div>
+
+      <h3>Divisão inteira — cuidado!</h3>
+      <p>Quando você divide dois números inteiros em Ruby, o resultado também é inteiro — a parte decimal é descartada. Se quiser o resultado com decimais, pelo menos um dos números precisa ser float:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>divisao.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="fn">puts</span> <span class="num">7</span> <span class="op">/</span> <span class="num">2</span>      <span class="cmt"># 3   ← descarta o .5 !</span>
+<span class="fn">puts</span> <span class="num">7.0</span> <span class="op">/</span> <span class="num">2</span>    <span class="cmt"># 3.5 ← correto<span class="op">,</span> um deles é float</span>
+<span class="fn">puts</span> <span class="num">7</span> <span class="op">/</span> <span class="num">2.0</span>    <span class="cmt"># 3.5 ← também funciona</span></pre></div>
+      </div>
+
+      <h3>Operações com variáveis</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>calc.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="var">preco</span>    <span class="op">=</span> <span class="num">150.0</span>
+<span class="var">desconto</span> <span class="op">=</span> <span class="num">20.0</span>
+<span class="var">total</span>    <span class="op">=</span> <span class="var">preco</span> <span class="op">-</span> <span class="var">desconto</span>
+
+<span class="fn">puts</span> <span class="str">"Preço original: R$ #{<span class="var">preco</span>}"</span>
+<span class="fn">puts</span> <span class="str">"Desconto: R$ #{<span class="var">desconto</span>}"</span>
+<span class="fn">puts</span> <span class="str">"Total: R$ #{<span class="var">total</span>}"</span>
+
+<span class="cmt"># Saída:</span>
+<span class="out"># Preço original: R$ 150.0</span>
+<span class="out"># Desconto: R$ 20.0</span>
+<span class="out"># Total: R$ 130.0</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Interpolação de string</span>
+        Viu o <code>#{variavel}</code> dentro do texto acima? Isso se chama <strong>interpolação</strong> — é como você insere o valor de uma variável dentro de uma string. Muito mais elegante do que ficar concatenando com <code>+</code>. Use sempre aspas duplas <code>"..."</code> para interpolação funcionar.
+      </div>
+    </div>
+
+    <!-- ENTRADA E SAÍDA -->
+    <div class="chapter" id="entrada-saida">
+      <div class="chapter-num">Aula 2</div>
+      <h2>Entrada e saída</h2>
+
+      <p>Até agora os seus programas fazem cálculos com valores que você escreveu diretamente no código. Mas programas reais precisam receber informações do usuário — e devolver respostas. Isso se chama <strong>entrada e saída</strong>.</p>
+
+      <ul>
+        <li><strong>Saída</strong> — mostrar algo na tela: <code>puts</code>, <code>print</code>, <code>p</code></li>
+        <li><strong>Entrada</strong> — receber algo digitado pelo usuário: <code>gets.chomp</code></li>
+      </ul>
+
+      <h3>puts vs print</h3>
+      <p>Ambos exibem texto, mas com uma diferença:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>saida.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="fn">puts</span> <span class="str">"Linha 1"</span>   <span class="cmt"># pula linha no final</span>
+<span class="fn">puts</span> <span class="str">"Linha 2"</span>
+
+<span class="fn">print</span> <span class="str">"Sem pular"</span>  <span class="cmt"># NÃO pula linha</span>
+<span class="fn">print</span> <span class="str">" — continua aqui"</span>
+
+<span class="cmt"># Saída:</span>
+<span class="out">Linha 1</span>
+<span class="out">Linha 2</span>
+<span class="out">Sem pular — continua aqui</span></pre></div>
+      </div>
+
+      <h3>Lendo o que o usuário digita</h3>
+      <p>O <code>gets</code> pausa o programa e espera o usuário digitar algo e pressionar Enter. O <code>.chomp</code> remove a quebra de linha que o Enter insere no final:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>saudacao.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="fn">print</span> <span class="str">"Digite seu <span class="var">nome</span>: "</span>
+<span class="var">nome</span> <span class="op">=</span> <span class="fn">gets</span><span class="op">.</span><span class="fn">chomp</span>
+
+<span class="fn">puts</span> <span class="str">"Olá<span class="op">,</span> #{<span class="var">nome</span>}! Bem-vinda ao Ruby."</span></pre></div>
+      </div>
+
+      <p>Execute com <code>ruby saudacao.rb</code>. O programa vai pausar esperando você digitar. Após digitar e apertar Enter, ele exibe a saudação com o nome que você digitou.</p>
+
+      <h3>Convertendo tipos na entrada</h3>
+      <p>Tudo que vem do <code>gets</code> é uma <strong>String</strong> — mesmo que a pessoa tenha digitado um número. Você precisa converter quando quiser fazer cálculos:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+          <span>calculadora.rb</span>
+        </div>
+        <div class="code-body"><pre><span class="fn">print</span> <span class="str">"Digite o primeiro número: "</span>
+<span class="var">num1</span> <span class="op">=</span> <span class="fn">gets</span><span class="op">.</span><span class="fn">chomp</span><span class="op">.</span><span class="fn">to_i</span>   <span class="cmt"># .to_i converte string → inteiro</span>
+
+<span class="fn">print</span> <span class="str">"Digite o segundo número: "</span>
+<span class="var">num2</span> <span class="op">=</span> <span class="fn">gets</span><span class="op">.</span><span class="fn">chomp</span><span class="op">.</span><span class="fn">to_i</span>
+
+<span class="var">soma</span> <span class="op">=</span> <span class="var">num1</span> <span class="op">+</span> <span class="var">num2</span>
+
+<span class="fn">puts</span> <span class="str">"A <span class="var">soma</span> é: #{<span class="var">soma</span>}"</span>
+
+<span class="cmt"># Exemplo de execução:</span>
+<span class="out">Digite o primeiro número: 15</span>
+<span class="out">Digite o segundo número: 7</span>
+<span class="out">A <span class="var">soma</span> é: 22</span></pre></div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-label">Métodos de conversão</span>
+        <code>.to_i</code> converte para inteiro (Integer), <code>.to_f</code> converte para decimal (Float) e <code>.to_s</code> converte qualquer coisa para texto (String). Você vai usar esses três com frequência.
+      </div>
+
+      <div class="practice">
+        <div class="practice-header">Pratique no IRB agora</div>
+        <div class="practice-body">
+          <p>Antes de ir para as missões, abra o IRB e teste os seguintes exemplos linha por linha:</p>
+          <ol>
+            <li>Crie variáveis com cada tipo de dado e use <code>.class</code> para confirmar o tipo</li>
+            <li>Faça uma operação usando módulo: <code>15 % 4</code> — qual o resto?</li>
+            <li>Tente dividir dois inteiros e depois refaça com float — observe a diferença</li>
+            <li>Crie um hash com pelo menos 3 chaves e acesse cada valor pelo nome da chave</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSÕES -->
+
+      <div class="quest-block">
+        <div class="quest-header">
+          <div class="quest-pixel"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <rect x="4" y="0" width="2" height="2" fill="#FF6B6B"/><rect x="6" y="0" width="4" height="2" fill="#FF4444"/><rect x="10" y="0" width="2" height="2" fill="#FF6B6B"/>
+  <rect x="2" y="2" width="2" height="2" fill="#FF8888"/><rect x="4" y="2" width="2" height="2" fill="#FFAAAA"/><rect x="6" y="2" width="4" height="2" fill="#FF6666"/><rect x="10" y="2" width="2" height="2" fill="#FF4444"/><rect x="12" y="2" width="2" height="2" fill="#FF8888"/>
+  <rect x="0" y="4" width="2" height="2" fill="#CC0000"/><rect x="2" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="4" y="4" width="8" height="2" fill="#FFCCCC"/><rect x="12" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="14" y="4" width="2" height="2" fill="#CC0000"/>
+  <rect x="0" y="6" width="2" height="4" fill="#CC0000"/><rect x="2" y="6" width="2" height="4" fill="#FF4444"/><rect x="4" y="6" width="8" height="4" fill="#FF8888"/><rect x="12" y="6" width="2" height="4" fill="#FF4444"/><rect x="14" y="6" width="2" height="4" fill="#CC0000"/>
+  <rect x="0" y="10" width="2" height="2" fill="#AA0000"/><rect x="2" y="10" width="2" height="2" fill="#CC0000"/><rect x="4" y="10" width="8" height="2" fill="#FF4444"/><rect x="12" y="10" width="2" height="2" fill="#CC0000"/><rect x="14" y="10" width="2" height="2" fill="#AA0000"/>
+  <rect x="2" y="12" width="2" height="2" fill="#880000"/><rect x="4" y="12" width="2" height="2" fill="#AA0000"/><rect x="6" y="12" width="4" height="2" fill="#CC0000"/><rect x="10" y="12" width="2" height="2" fill="#AA0000"/><rect x="12" y="12" width="2" height="2" fill="#880000"/>
+  <rect x="4" y="14" width="2" height="2" fill="#660000"/><rect x="6" y="14" width="4" height="2" fill="#880000"/><rect x="10" y="14" width="2" height="2" fill="#660000"/>
+</svg></div>
+          <div class="quest-info">
+            <div class="quest-label">Quest 02 · Git: branch</div>
+            <div class="quest-title">Tipos e operadores</div>
+          </div>
+          <div class="quest-xp">+80 XP</div>
+        </div>
+        <div class="quest-body">
+          <ol>
+            <li>No IRB, crie uma variável de cada tipo — Integer, Float, String, Boolean, Array e Hash. Use <code>.class</code> para confirmar cada um.</li>
+            <li>Crie um arquivo <code>quest02.rb</code> que pede dois números ao usuário e exibe o resultado da soma, subtração, multiplicação e divisão — tudo em um único programa.</li>
+            <li>No mesmo programa, exiba o resultado do módulo (<code>%</code>) e diga se o primeiro número é par ou ímpar. Dica: um número é par quando <code>numero % 2 == 0</code>.</li>
+          </ol>
+          <div class="quest-git-flow">
+            <div class="quest-git-title">🕹️ Fluxo Git desta Quest — branch pela primeira vez</div>
+            <div class="callout note" style="margin:10px 0 6px 0;font-size:13px">
+              <span class="callout-label">O que é um branch?</span>
+              Um branch é uma linha paralela de desenvolvimento. Você cria uma cópia do projeto, trabalha nela sem afetar a versão principal (main) e depois junta tudo de volta. É assim que times profissionais organizam o trabalho.
+            </div>
+            <div class="code-block" style="margin:0">
+              <div class="code-header">
+                <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <span>Terminal</span>
+              </div>
+              <div class="code-body"><pre><span class="cmt"># Crie e entre no branch</span>
+<span class="prm">$</span> <span class="cmd">git checkout -b quest02</span>
+
+<span class="cmt"># Escreva seu código, depois salve e envie</span>
+<span class="prm">$</span> <span class="cmd">git add quests/quest02.rb</span>
+<span class="prm">$</span> <span class="cmd">git commit -m "quest02: calculadora e tipos de dados"</span>
+<span class="prm">$</span> <span class="cmd">git push origin quest02</span></pre></div>
+            </div>
+          </div>
+          <div class="quest-delivery">
+            <span class="quest-delivery-label">📦 Entrega</span>
+            Branch <code>quest02</code> enviado para o GitHub. O mentor vai revisar o código direto no branch.
+          </div>
+        </div>
+      </div>
+
+      <div class="quest-block quest-bonus">
+        <div class="quest-header">
+          <div class="quest-pixel"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <rect x="4" y="0" width="2" height="2" fill="#FF6B6B"/><rect x="6" y="0" width="4" height="2" fill="#FF4444"/><rect x="10" y="0" width="2" height="2" fill="#FF6B6B"/>
+  <rect x="2" y="2" width="2" height="2" fill="#FF8888"/><rect x="4" y="2" width="2" height="2" fill="#FFAAAA"/><rect x="6" y="2" width="4" height="2" fill="#FF6666"/><rect x="10" y="2" width="2" height="2" fill="#FF4444"/><rect x="12" y="2" width="2" height="2" fill="#FF8888"/>
+  <rect x="0" y="4" width="2" height="2" fill="#CC0000"/><rect x="2" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="4" y="4" width="8" height="2" fill="#FFCCCC"/><rect x="12" y="4" width="2" height="2" fill="#FF6B6B"/><rect x="14" y="4" width="2" height="2" fill="#CC0000"/>
+  <rect x="0" y="6" width="2" height="4" fill="#CC0000"/><rect x="2" y="6" width="2" height="4" fill="#FF4444"/><rect x="4" y="6" width="8" height="4" fill="#FF8888"/><rect x="12" y="6" width="2" height="4" fill="#FF4444"/><rect x="14" y="6" width="2" height="4" fill="#CC0000"/>
+  <rect x="0" y="10" width="2" height="2" fill="#AA0000"/><rect x="2" y="10" width="2" height="2" fill="#CC0000"/><rect x="4" y="10" width="8" height="2" fill="#FF4444"/><rect x="12" y="10" width="2" height="2" fill="#CC0000"/><rect x="14" y="10" width="2" height="2" fill="#AA0000"/>
+  <rect x="2" y="12" width="2" height="2" fill="#880000"/><rect x="4" y="12" width="2" height="2" fill="#AA0000"/><rect x="6" y="12" width="4" height="2" fill="#CC0000"/><rect x="10" y="12" width="2" height="2" fill="#AA0000"/><rect x="12" y="12" width="2" height="2" fill="#880000"/>
+  <rect x="4" y="14" width="2" height="2" fill="#660000"/><rect x="6" y="14" width="4" height="2" fill="#880000"/><rect x="10" y="14" width="2" height="2" fill="#660000"/>
+</svg></div>
+          <div class="quest-info">
+            <div class="quest-label">Quest 03 ⭐ Bônus · Git: Pull Request</div>
+            <div class="quest-title">Perfil interativo</div>
+          </div>
+          <div class="quest-xp">+120 XP</div>
+        </div>
+        <div class="quest-body">
+          <ol>
+            <li>Crie um arquivo <code>quest03.rb</code> que pede ao usuário: nome, cidade e ano de nascimento.</li>
+            <li>Exibe tudo em uma frase organizada com interpolação de string e calcula a idade aproximada (2026 menos o ano de nascimento).</li>
+            <li>Desafio extra: pergunte também a profissão e monte uma apresentação completa no final.</li>
+          </ol>
+          <div class="quest-git-flow">
+            <div class="quest-git-title">🕹️ Fluxo Git desta Quest — Pull Request completo</div>
+            <div class="callout note" style="margin:10px 0 6px 0;font-size:13px">
+              <span class="callout-label">O que é um Pull Request?</span>
+              Um Pull Request (PR) é um pedido para juntar o seu branch de volta na main. É aqui que acontece o code review — o mentor vai ler seu código, deixar comentários e você responde ou corrige antes do merge.
+            </div>
+            <div class="code-block" style="margin:0 0 10px 0">
+              <div class="code-header">
+                <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
+                <span>Terminal</span>
+              </div>
+              <div class="code-body"><pre><span class="cmt"># Crie o branch, escreva o código, salve e envie</span>
+<span class="prm">$</span> <span class="cmd">git checkout -b quest03</span>
+<span class="prm">$</span> <span class="cmd">git add quests/quest03.rb</span>
+<span class="prm">$</span> <span class="cmd">git commit -m "quest03: perfil interativo com interpolacao"</span>
+<span class="prm">$</span> <span class="cmd">git push origin quest03</span>
+
+<span class="cmt"># No GitHub: abra um Pull Request de quest03 → main</span></pre></div>
+            </div>
+          </div>
+          <div class="quest-delivery">
+            <span class="quest-delivery-label">📦 Entrega</span>
+            Pull Request aberto no GitHub de <code>quest03 → main</code>. Aguarde o code review antes de fazer o merge.
+          </div>
+        </div>
+      </div>
+
+
+<!-- O QUE É GIT -->
+
+  </main>
+</div>
+
+</body>
+</html>
