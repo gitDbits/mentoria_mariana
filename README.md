@@ -1,4 +1,4 @@
-# Mentoria Ruby on Rails — Bárbara Garcez
+# Mentoria Ruby on Rails — Mariana
 
 Repositório de acompanhamento da mentoria individual em desenvolvimento de software com foco em **Ruby** e **Ruby on Rails**.
 
@@ -32,4 +32,4 @@ Capacitar a mentorada ao nível de **Engenheira de Software Júnior**, desenvolv
 ---
 
 **Mentorado:** Diego Noronha  
-**Mentorada:** Bárbara Garcez
+**Mentorada:** Mariana
