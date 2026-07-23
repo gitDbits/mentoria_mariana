@@ -145,11 +145,26 @@ header h1 em { font-style: italic; font-weight: 300; color: rgba(255,255,255,0.8
   color: var(--ink-3); margin-bottom: 10px;
   padding-bottom: 8px; border-bottom: 1px solid var(--border);
 }
-.sidebar ol { list-style: none; counter-reset: s; padding: 0; }
+.sidebar ol { list-style: none; counter-reset: s; padding: 0; margin: 0 0 6px; }
 .sidebar ol li { counter-increment: s; position: relative; padding-left: 20px; margin-bottom: 2px; }
 .sidebar ol li::before { content: counter(s) '.'; position: absolute; left: 0; top: 3px; font-size: 11px; color: var(--ink-3); font-weight: 600; }
 .sidebar ol li a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0; font-size: 13px; line-height: 1.4; transition: color 0.12s; }
 .sidebar ol li a:hover { color: var(--red); }
+.sidebar-section { margin-bottom: 14px; }
+.sidebar-section-title {
+  font-size: 12px; font-weight: 700; color: var(--ink-1);
+  margin: 16px 0 6px;
+}
+.sidebar-section:first-of-type .sidebar-section-title { margin-top: 0; }
+.sidebar ol li.aula-label {
+  counter-increment: none;
+  padding-left: 0;
+  margin: 12px 0 4px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--red);
+}
+.sidebar ol li.aula-label:first-child { margin-top: 0; }
+.sidebar ol li.aula-label::before { content: none; }
 .sbox { margin-top: 18px; padding: 12px 14px; font-size: 12px; line-height: 1.55; border-radius: 0 4px 4px 0; }
 .sbox.red   { background: var(--red-light); border-left: 3px solid var(--red); color: #6B0000; }
 .sbox.green { background: var(--green-bg); border-left: 3px solid var(--green); color: #0D3D22; }
@@ -609,57 +624,89 @@ footer { background: var(--red-dark); padding: 22px 40px; text-align: center; fo
 <div class="main-wrap sidebar-wrap">
   <aside class="sidebar">
     <h3>Neste módulo</h3>
-    <ol>
-      <li><a href="#rotina-diaria">Rotina diária</a></li>
-      <li><a href="#setup-ambiente">Setup — Ambiente</a></li>
-      <li><a href="#git-intro">Git — Início</a></li>
-      <li><a href="#o-que-e-git">Git — O que é</a></li>
-      <li><a href="#tres-estagios">Git — Os 3 estágios</a></li>
-      <li><a href="#primeiros-comandos">Git — Primeiros comandos</a></li>
-      <li><a href="#branches">Git — Branches</a></li>
-      <li><a href="#remoto">Git — Repositório remoto</a></li>
-      <li><a href="#desfazendo">Git — Desfazendo erros</a></li>
-      <li><a href="#referencia">Git — Referência rápida</a></li>
-      <li><a href="#setup-ruby">Setup — Ruby</a></li>
-      <li><a href="#introducao">Introdução ao Ruby</a></li>
-      <li><a href="#primeiro-programa">Primeiro programa</a></li>
-      <li><a href="#irb">IRB — o playground</a></li>
-      <li><a href="#tipos-de-dados">Tipos de dados</a></li>
-      <li><a href="#operadores">Operadores matemáticos</a></li>
-      <li><a href="#entrada-saida">Entrada e saída</a></li>
-      <li><a href="#condicionais">Condicionais</a></li>
-      <li><a href="#iteracoes">Iterações</a></li>
-      <li><a href="#controle-combinado">Combinando os dois</a></li>
-      <li><a href="#arrays">Arrays</a></li>
-      <li><a href="#hashes">Hashes</a></li>
-      <li><a href="#each-map-select">each, map e select</a></li>
-      <li><a href="#metodos">Métodos</a></li>
-      <li><a href="#retorno-metodos">Retorno de métodos</a></li>
-      <li><a href="#gems">Gems</a></li>
-      <li><a href="#bundler">Gemfile e Bundler</a></li>
-      <li><a href="#poo-conceitos">O que é POO</a></li>
-      <li><a href="#classes-objetos">Classes e objetos</a></li>
-      <li><a href="#heranca">Herança</a></li>
-      <li><a href="#polimorfismo">Polimorfismo</a></li>
-      <li><a href="#require-rb">require e require_relative</a></li>
-      <li><a href="#escopo-variaveis">Escopo de variáveis</a></li>
-      <li><a href="#atributos">Atributos e attr_accessor</a></li>
-      <li><a href="#construtor">Construtor initialize</a></li>
-      <li><a href="#blocks">Blocks</a></li>
-      <li><a href="#lambda">Lambda</a></li>
-      <li><a href="#namespace">Modules e Namespace</a></li>
-      <li><a href="#mixins">Mixins</a></li>
-      <li><a href="#regex">Regex</a></li>
-      <li><a href="#time">Time</a></li>
-      <li><a href="#method-missing">method_missing</a></li>
-      <li><a href="#self">self</a></li>
-      <li><a href="#metodos-visibilidade">Private e Protected</a></li>
-      <li><a href="#leitura-arquivos">Leitura de arquivos</a></li>
-      <li><a href="#escrita-arquivos">Escrita em arquivos</a></li>
-      <li><a href="#chamadas-web">Chamadas web</a></li>
-      <li><a href="#web-scraping">Web scraping</a></li>
-      <li><a href="#projeto-final">🏆 Projeto Final</a></li>
-    </ol>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Setup Inicial</div>
+      <ol>
+        <li><a href="#rotina-diaria">Rotina diária</a></li>
+        <li><a href="#setup-ambiente">Setup — Ambiente</a></li>
+      </ol>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Git &amp; GitHub</div>
+      <ol>
+        <li><a href="#git-intro">Início</a></li>
+        <li class="aula-label">Git — Aula 1</li>
+        <li><a href="#o-que-e-git">O que é Git</a></li>
+        <li class="aula-label">Git — Aula 2</li>
+        <li><a href="#tres-estagios">Os 3 estágios</a></li>
+        <li class="aula-label">Git — Aula 3</li>
+        <li><a href="#primeiros-comandos">Primeiros comandos</a></li>
+        <li class="aula-label">Git — Aula 4</li>
+        <li><a href="#branches">Branches</a></li>
+        <li class="aula-label">Git — Aula 5</li>
+        <li><a href="#remoto">Repositório remoto</a></li>
+        <li class="aula-label">Git — Aula 6</li>
+        <li><a href="#desfazendo">Desfazendo erros</a></li>
+        <li><a href="#referencia">Referência rápida</a></li>
+      </ol>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Ruby</div>
+      <ol>
+        <li><a href="#setup-ruby">Setup — Ruby</a></li>
+        <li class="aula-label">Ruby — Aula 1</li>
+        <li><a href="#introducao">Introdução ao Ruby</a></li>
+        <li><a href="#primeiro-programa">Primeiro programa</a></li>
+        <li><a href="#irb">IRB — o playground</a></li>
+        <li class="aula-label">Ruby — Aula 2</li>
+        <li><a href="#tipos-de-dados">Tipos de dados</a></li>
+        <li><a href="#operadores">Operadores matemáticos</a></li>
+        <li><a href="#entrada-saida">Entrada e saída</a></li>
+        <li class="aula-label">Ruby — Aula 3</li>
+        <li><a href="#condicionais">Condicionais</a></li>
+        <li><a href="#iteracoes">Iterações</a></li>
+        <li><a href="#controle-combinado">Combinando os dois</a></li>
+        <li class="aula-label">Ruby — Aula 4</li>
+        <li><a href="#arrays">Arrays</a></li>
+        <li><a href="#hashes">Hashes</a></li>
+        <li><a href="#each-map-select">each, map e select</a></li>
+        <li class="aula-label">Ruby — Aula 5</li>
+        <li><a href="#metodos">Métodos</a></li>
+        <li><a href="#retorno-metodos">Retorno de métodos</a></li>
+        <li><a href="#gems">Gems</a></li>
+        <li><a href="#bundler">Gemfile e Bundler</a></li>
+        <li class="aula-label">Ruby — Aula 6</li>
+        <li><a href="#poo-conceitos">O que é POO</a></li>
+        <li><a href="#classes-objetos">Classes e objetos</a></li>
+        <li><a href="#heranca">Herança</a></li>
+        <li><a href="#polimorfismo">Polimorfismo</a></li>
+        <li class="aula-label">Ruby — Aula 7</li>
+        <li><a href="#require-rb">require e require_relative</a></li>
+        <li><a href="#escopo-variaveis">Escopo de variáveis</a></li>
+        <li><a href="#atributos">Atributos e attr_accessor</a></li>
+        <li><a href="#construtor">Construtor initialize</a></li>
+        <li class="aula-label">Ruby — Aula 8</li>
+        <li><a href="#blocks">Blocks</a></li>
+        <li><a href="#lambda">Lambda</a></li>
+        <li><a href="#namespace">Modules e Namespace</a></li>
+        <li><a href="#mixins">Mixins</a></li>
+        <li class="aula-label">Ruby — Aula 9</li>
+        <li><a href="#regex">Regex</a></li>
+        <li><a href="#time">Time</a></li>
+        <li><a href="#method-missing">method_missing</a></li>
+        <li><a href="#self">self</a></li>
+        <li><a href="#metodos-visibilidade">Private e Protected</a></li>
+        <li class="aula-label">Ruby — Aula 10</li>
+        <li><a href="#leitura-arquivos">Leitura de arquivos</a></li>
+        <li><a href="#escrita-arquivos">Escrita em arquivos</a></li>
+        <li><a href="#chamadas-web">Chamadas web</a></li>
+        <li><a href="#web-scraping">Web scraping</a></li>
+        <li><a href="#projeto-final">🏆 Projeto Final</a></li>
+      </ol>
+    </div>
     <div class="sbox red">
       <strong>Pré-requisito</strong>
       Siga o capítulo de Setup Inicial antes de começar as aulas de Ruby.
@@ -1048,7 +1095,7 @@ footer { background: var(--red-dark); padding: 22px 40px; text-align: center; fo
           <div class="check-num">2</div>
           <div class="check-body">
             <div class="check-title">Clonar o repositório do curso</div>
-            <div class="check-desc">O repositório já está criado em <a href="https://github.com/gitDbits/mentoria_mariana" target="_blank">github.com/gitDbits/mentoria_mariana</a>. Você vai cloná-lo na primeira sessão juntos.</div>
+            <div class="check-desc">O repositório já está criado em <a href="https://github.com/gitDbits/mentoria_barbara" target="_blank">github.com/gitDbits/mentoria_barbara</a>. Você vai cloná-lo na primeira sessão juntos.</div>
           </div>
         </div>
         <div class="checklist-item">
@@ -1286,15 +1333,15 @@ user.email=seu@email.com</span></pre></div>
       </div>
 
       <h3>Clonando o repositório</h3>
-      <p>O repositório do curso está em <a href="https://github.com/gitDbits/mentoria_mariana" target="_blank">github.com/gitDbits/mentoria_mariana</a>. Clone para a sua máquina:</p>
+      <p>O repositório do curso está em <a href="https://github.com/gitDbits/mentoria_barbara" target="_blank">github.com/gitDbits/mentoria_barbara</a>. Clone para a sua máquina:</p>
 
       <div class="code-block">
         <div class="code-header">
           <div class="dot-row"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
           <span>Terminal</span>
         </div>
-        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">git clone https://github.com/gitDbits/mentoria_mariana.git</span>
-<span class="prm">$</span> <span class="cmd">cd mentoria_mariana</span>
+        <div class="code-body"><pre><span class="prm">$</span> <span class="cmd">git clone https://github.com/gitDbits/mentoria_barbara.git</span>
+<span class="prm">$</span> <span class="cmd">cd mentoria_barbara</span>
 <span class="prm">$</span> <span class="cmd">code .</span>   <span class="cmt"># abre o VS Code nesta pasta</span></pre></div>
       </div>
 
@@ -1363,7 +1410,7 @@ user.email=seu@email.com</span></pre></div>
           </ol>
           <div class="quest-delivery">
             <span class="quest-delivery-label">📦 Entrega</span>
-            Arquivo <code>quests/quest01.txt</code> visível em <a href="https://github.com/gitDbits/mentoria_mariana" target="_blank">github.com/gitDbits/mentoria_mariana</a>.
+            Arquivo <code>quests/quest01.txt</code> visível em <a href="https://github.com/gitDbits/mentoria_barbara" target="_blank">github.com/gitDbits/mentoria_barbara</a>.
           </div>
         </div>
       </div>
@@ -1557,8 +1604,8 @@ Fast-forward
 
 <span class="cmt"># Ver os remotos configurados</span>
 <span class="prm">$</span> <span class="cmd">git remote -v</span>
-<span class="out">origin  https://github.com/gitDbits/mentoria_mariana.git (fetch)
-origin  https://github.com/gitDbits/mentoria_mariana.git (push)</span></pre></div>
+<span class="out">origin  https://github.com/gitDbits/mentoria_barbara.git (fetch)
+origin  https://github.com/gitDbits/mentoria_barbara.git (push)</span></pre></div>
       </div>
 
       <h3>Pull Request — o fluxo de revisão</h3>
@@ -1910,7 +1957,7 @@ origin  https://github.com/gitDbits/mentoria_mariana.git (push)</span></pre></di
       <p>Todo programador tem uma tradição: o primeiro programa que escreve exibe "Hello, World!" na tela. Vamos fazer isso — mas entendendo cada peça do que está acontecendo.</p>
 
       <h3>Criando o arquivo</h3>
-      <p>Arquivos Ruby têm a extensão <code>.rb</code>. Antes de continuar, crie uma pasta chamada <code>ruby_basico</code> no VS Code. Os exemplos a seguir assumem que você vai criar cada arquivo dentro dessa pasta — o nome do arquivo está sempre indicado no cabeçalho do bloco de código.</p>
+      <p>Arquivos Ruby têm a extensão <code>.rb</code>. Abra o VS Code, crie uma nova pasta chamada <code>ruby_basico</code> e dentro dela crie um arquivo chamado <code>hello.rb</code>.</p>
 
       <h3>Escrevendo o código</h3>
       <p>Dentro do arquivo, escreva a linha abaixo e salve:</p>
