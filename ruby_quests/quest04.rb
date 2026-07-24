@@ -1,4 +1,4 @@
-  loop do
+loop do
   puts "==== Calculadora ===="
   puts "1 - Somar"
   puts "2 - Subtrair"
@@ -10,30 +10,30 @@
   opcao = gets.chomp.to_i
 
   if opcao == 0
-  break 
+    break 
   end
 
   if opcao >= 1 && opcao <= 4
   
-  print "Digite um número: "
-  num1 = gets.chomp.to_i
+    print "Digite um número: "
+    num1 = gets.chomp.to_i
 
-  print "Digite mais um número: "
-  num2 = gets.chomp.to_i
+    print "Digite mais um número: "
+    num2 = gets.chomp.to_i
 
-  case opcao
-  when 1
-  resultado = num1 + num2 
-  when 2
-  resultado = num1 - num2
-  when 3 
-  resultado = num1 * num2
-  when 4
-  resultado = num1 / num2 
-  end 
+    case opcao
+      when 1
+        resultado = num1 + num2 
+      when 2
+        resultado = num1 - num2
+      when 3 
+        resultado = num1 * num2
+      when 4
+        resultado = num1 / num2 
+    end 
 
-  puts "Resultado: #{resultado}"
+    puts "Resultado: #{resultado}"
   else
-  puts "Opção inválida"
+    puts "Opção inválida"
   end
-  end
+end
